@@ -1,4 +1,4 @@
-package com.graduate;
+package com.graduate.ui;
 
 import javax.swing.*;
 import java.awt.*;
@@ -31,7 +31,7 @@ public class SplashScreen extends JFrame {
         setLocationRelativeTo(null); // Center the frame on the screen
         try {
             // Load custom font
-            Font arcadeFont = Font.createFont(Font.TRUETYPE_FONT, new File("src/Resources/arcade_ya/ARCADE_N.TTF")).deriveFont(96f);
+            Font arcadeFont = Font.createFont(Font.TRUETYPE_FONT, new File("src/resources/arcade_ya/ARCADE_N.TTF")).deriveFont(96f);
             GraphicsEnvironment.getLocalGraphicsEnvironment().registerFont(arcadeFont); // Register the font
             UIManager.put("Label.font", arcadeFont); // Set default font for JLabel
             UIManager.put("Button.font", arcadeFont.deriveFont(24f)); // Set default font for JButton with smaller size
@@ -56,7 +56,7 @@ public class SplashScreen extends JFrame {
         titleEscape.setAlignmentX(Component.CENTER_ALIGNMENT);
         titlePanel.add(titleEscape); // Add title label for "ESCAPE"
 
-        JLabel labyrinthImage = new JLabel(new ImageIcon("src/Resources/LABYRINTH.png"), SwingConstants.CENTER); // Create image label
+        JLabel labyrinthImage = new JLabel(new ImageIcon("src/resources/LABYRINTH.png"), SwingConstants.CENTER); // Create image label
 
         JButton startButton = new JButton("START GAME"); // Create start button
         startButton.setBackground(new Color(0x545454)); // Set button background color

@@ -1,5 +1,7 @@
 package com.graduate;
 
+import com.graduate.ui.SplashScreen;
+
 import javax.swing.*;
 
 public class EscapeTheLabyrinth {

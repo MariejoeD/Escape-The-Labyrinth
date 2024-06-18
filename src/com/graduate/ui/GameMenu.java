@@ -1,4 +1,6 @@
-package com.graduate;
+package com.graduate.ui;
+
+import com.graduate.ui.SplashScreen;
 
 import javax.swing.*;
 import java.awt.*;
@@ -7,7 +9,7 @@ import java.io.IOException;
 
 public class GameMenu extends JPanel {
 
-    private SplashScreen splashScreen;
+    private com.graduate.ui.SplashScreen splashScreen;
 
     public GameMenu(SplashScreen splashScreen) {
         this.splashScreen = splashScreen;
@@ -18,7 +20,7 @@ public class GameMenu extends JPanel {
         // Load custom font
         Font arcadeFont = null;
         try {
-            arcadeFont = Font.createFont(Font.TRUETYPE_FONT, new File("src/Resources/arcade_ya/ARCADE_N.TTF"));
+            arcadeFont = Font.createFont(Font.TRUETYPE_FONT, new File("src/resources/arcade_ya/ARCADE_N.TTF"));
             GraphicsEnvironment.getLocalGraphicsEnvironment().registerFont(arcadeFont);
         } catch (IOException | FontFormatException e) {
             e.printStackTrace();
@@ -60,7 +62,7 @@ public class GameMenu extends JPanel {
         titlePanel.add(titleEscape); // Add title label for "ESCAPE THE" to the top
 
         // Create a labyrinth image label
-        JLabel labyrinthImage = new JLabel(new ImageIcon("src/Resources/LABYRINTH.png"));
+        JLabel labyrinthImage = new JLabel(new ImageIcon("src/resources/LABYRINTH.png"));
         labyrinthImage.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         // Create a main panel to hold both titlePanel and labyrinthImage
