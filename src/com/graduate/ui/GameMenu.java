@@ -1,58 +1,35 @@
 package com.graduate.ui;
 
-import com.graduate.ui.SplashScreen;
-
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
 
 public class GameMenu extends JPanel {
 
-    private com.graduate.ui.SplashScreen splashScreen;
+    private SplashScreen splashScreen;
+    private Font arcadeFont; // Declare arcadeFont as a class member
 
     public GameMenu(SplashScreen splashScreen) {
         this.splashScreen = splashScreen;
 
         setLayout(new BorderLayout()); // Set layout for the panel
-        setBackground(new Color(255, 224, 102)); // Set panel background color
+        setBackground(new Color(0x5CE1E6)); // Set panel background color
 
         // Load custom font
-        Font arcadeFont = null;
         try {
-            arcadeFont = Font.createFont(Font.TRUETYPE_FONT, new File("src/resources/arcade_ya/ARCADE_N.TTF"));
+            arcadeFont = Font.createFont(Font.TRUETYPE_FONT, new File("src/Resources/arcade_ya/ARCADE_N.TTF"));
             GraphicsEnvironment.getLocalGraphicsEnvironment().registerFont(arcadeFont);
         } catch (IOException | FontFormatException e) {
             e.printStackTrace();
         }
 
-        // Create and add back button to the upper left corner
-        JButton backButton = new JButton("BACK");
-        backButton.setFont(arcadeFont.deriveFont(24f));
-        backButton.setBackground(new Color(0x545454)); // Set button background color
-        backButton.setForeground(Color.WHITE); // Set button text color
-        backButton.setFocusPainted(false); // Disable focus painting
-        backButton.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20)); // Set button border with padding
-
-        backButton.addActionListener(e -> {
-            // Logic to go back to splash screen
-            splashScreen.getPanel().removeAll(); // Remove all components from splash screen panel
-            splashScreen.addComponents(); // Add splash screen components
-            splashScreen.getPanel().revalidate(); // Refresh the panel
-            splashScreen.getPanel().repaint(); // Repaint the panel
-        });
-
-        JPanel backButtonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        backButtonPanel.setOpaque(false); // Make back button panel transparent
-        backButtonPanel.add(backButton); // Add back button
-
-        // Add back button panel to the top left corner
-        add(backButtonPanel, BorderLayout.NORTH); // Add back button panel to the top
-
         // Add title labels with shadow effect
         ShadowText titleEscape = new ShadowText("ESCAPE THE", SwingConstants.CENTER, 5, 5);
-        titleEscape.setForeground(new Color(84, 84, 84)); // Set title text color
-        titleEscape.setFont(arcadeFont.deriveFont(100f)); // Set bigger font size for "ESCAPE THE"
+        titleEscape.setForeground(Color.black); // Set title text color
+        titleEscape.setFont(arcadeFont.deriveFont(90f)); // Set bigger font size for "ESCAPE THE"
 
         // Create panel to hold the title labels and center them vertically
         JPanel titlePanel = new JPanel();
@@ -70,42 +47,90 @@ public class GameMenu extends JPanel {
         mainPanel.setOpaque(false); // Make main panel transparent
         mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
         mainPanel.add(titlePanel);
-        mainPanel.add(Box.createVerticalStrut(20)); // Decrease vertical space to 20 pixels
+        mainPanel.add(Box.createVerticalStrut(10)); // Decrease vertical space to 20 pixels
         mainPanel.add(labyrinthImage);
 
         // Add the main panel to the center
         add(mainPanel, BorderLayout.CENTER);
 
-        // Create buttons for "Difficulty" and "Settings"
-        JButton difficultyButton = new JButton("DIFFICULTY");
-        difficultyButton.setFont(arcadeFont.deriveFont(60f));
-        difficultyButton.setBackground(new Color(255, 224, 102));
-        difficultyButton.setFocusPainted(false); // Disable focus painting
-        difficultyButton.setBorder(BorderFactory.createEmptyBorder(20, 40, 30, 40)); // Add padding to the button
+        // Create buttons for "Start" and "Settings"
+        JButton startButton = createStyledButton("START", arcadeFont);
+        JButton settingsButton = createStyledButton("SETTINGS", arcadeFont);
 
-        JButton settingsButton = new JButton("SETTINGS");
-        settingsButton.setFont(arcadeFont.deriveFont(60f));
-        settingsButton.setBackground(new Color(255, 224, 102));
-        settingsButton.setFocusPainted(false); // Disable focus painting
-        settingsButton.setBorder(BorderFactory.createEmptyBorder(20, 40, 30, 40)); // Add padding to the button
+        // Add action listeners to buttons
+        startButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Open new class for Start
+                // Replace StartClass with the actual class name you want to open for Start
+                StartClass start = new StartClass();
+                // Call method to start the game or do whatever is needed
 
-        // Create panel for buttons
+            }
+        });
+
+        settingsButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Open new class for Settings
+                // Replace SettingsClass with the actual class name you want to open for Settings
+                SettingsClass settings = new SettingsClass(arcadeFont);
+                // Clear current panel and add settings panel
+                removeAll();
+                add(settings);
+                revalidate();
+                repaint();
+            }
+        });
+
+        // Create panel for buttons and center it
         JPanel buttonPanel = new JPanel();
-        buttonPanel.setLayout(new GridLayout(2, 1, 0, 40)); // GridLayout with 2 rows, 1 column, and vertical gap of 40
+        buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.Y_AXIS));
         buttonPanel.setOpaque(false); // Make button panel transparent
-        buttonPanel.add(difficultyButton); // Add difficulty button
+        buttonPanel.add(startButton); // Add start button
+        buttonPanel.add(Box.createVerticalStrut(30)); // Add space between buttons
         buttonPanel.add(settingsButton); // Add settings button
+        buttonPanel.add(Box.createVerticalStrut(200)); // Add space below the buttons
 
-        // Create a wrapper panel to add vertical space and lift the button panel
-        JPanel wrapperPanel = new JPanel(new BorderLayout());
-        wrapperPanel.setOpaque(false);
-        wrapperPanel.add(buttonPanel, BorderLayout.NORTH); // Add button panel to the top
+        // Center the button panel
+        JPanel centeredPanel = new JPanel(new GridBagLayout());
+        centeredPanel.setOpaque(false);
+        centeredPanel.add(buttonPanel);
 
-        // Add an empty border to add extra space at the bottom
-        wrapperPanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 60, 0));
+        // Add centered panel to the bottom
+        add(centeredPanel, BorderLayout.SOUTH);
+    }
 
-        // Add wrapper panel to the bottom
-        add(wrapperPanel, BorderLayout.SOUTH);
+    // Method to create styled buttons
+    private JButton createStyledButton(String text, Font font) {
+        JButton button = new JButton(text) {
+            @Override
+            protected void paintComponent(Graphics g) {
+                if (!isOpaque() && getBackground() != null) {
+                    Graphics2D g2 = (Graphics2D) g.create();
+                    g2.setColor(getBackground());
+                    g2.fillRoundRect(0, 0, getWidth(), getHeight(), 90, 90); // Rounded corners with radius 30
+                    g2.dispose();
+                }
+                super.paintComponent(g);
+            }
+
+            @Override
+            public void updateUI() {
+                super.updateUI();
+                setOpaque(false);
+                setContentAreaFilled(false);
+                setBorderPainted(false);
+            }
+        };
+
+        button.setFont(font.deriveFont(50f));
+        button.setBackground(Color.WHITE);
+        button.setFocusPainted(false); // Disable focus painting
+        button.setBorder(BorderFactory.createEmptyBorder(20, 50, 20, 50));
+        button.setAlignmentX(Component.CENTER_ALIGNMENT);
+        button.setForeground(Color.BLACK);
+        return button;
     }
 
     // Custom JLabel class for text with shadow effect

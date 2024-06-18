@@ -1,5 +1,6 @@
 package com.graduate.ui;
 
+
 import javax.swing.*;
 import java.awt.*;
 import java.io.File;
@@ -16,6 +17,7 @@ public class SplashScreen extends JFrame {
         addComponents();   // Add components to the main panel
         add(mainPanel); // Add main panel to the frame
         setVisible(true); // Make the frame visible
+        startTimer(); // Start the 5-second timer
     }
 
     // Method to initialize frame properties
@@ -31,7 +33,7 @@ public class SplashScreen extends JFrame {
         setLocationRelativeTo(null); // Center the frame on the screen
         try {
             // Load custom font
-            Font arcadeFont = Font.createFont(Font.TRUETYPE_FONT, new File("src/resources/arcade_ya/ARCADE_N.TTF")).deriveFont(96f);
+            Font arcadeFont = Font.createFont(Font.TRUETYPE_FONT, new File("src/Resources/arcade_ya/ARCADE_N.TTF")).deriveFont(96f);
             GraphicsEnvironment.getLocalGraphicsEnvironment().registerFont(arcadeFont); // Register the font
             UIManager.put("Label.font", arcadeFont); // Set default font for JLabel
             UIManager.put("Button.font", arcadeFont.deriveFont(24f)); // Set default font for JButton with smaller size
@@ -42,54 +44,44 @@ public class SplashScreen extends JFrame {
     }
 
     public void addComponents() {
-        mainPanel.setBackground(new Color(255, 224, 102)); // Set panel background color
+        mainPanel.setBackground(new Color(0x5CE1E6)); // Set panel background color to #5CE1E6
 
         // Create title labels with shadow effect
         ShadowText titleEscape = new ShadowText("ESCAPE THE", SwingConstants.CENTER, 5, 5);
-        titleEscape.setForeground(new Color(84, 84, 84)); // Set title text color
-        titleEscape.setFont(titleEscape.getFont().deriveFont(150f)); // Set bigger font size for "ESCAPE THE"
+        titleEscape.setForeground(Color.black); // Set title text color
+        titleEscape.setFont(titleEscape.getFont().deriveFont(90f)); // Set bigger font size for "ESCAPE THE"
 
         // Create panel to hold the title labels and center them vertically
         JPanel titlePanel = new JPanel();
         titlePanel.setLayout(new BoxLayout(titlePanel, BoxLayout.Y_AXIS));
         titlePanel.setOpaque(false); // Make title panel transparent
+
+        // Add vertical space above the title
+        titlePanel.add(Box.createVerticalStrut(200)); // Adjust the space as needed
         titleEscape.setAlignmentX(Component.CENTER_ALIGNMENT);
-        titlePanel.add(titleEscape); // Add title label for "ESCAPE"
+        titlePanel.add(titleEscape); // Add title label for "ESCAPE THE"
 
         JLabel labyrinthImage = new JLabel(new ImageIcon("src/resources/images/LABYRINTH.png"), SwingConstants.CENTER); // Create image label
+        labyrinthImage.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        JButton startButton = new JButton("START GAME"); // Create start button
-        startButton.setBackground(new Color(0x545454)); // Set button background color
-        startButton.setForeground(Color.WHITE); // Set button text color
-        startButton.setFocusPainted(false); // Disable focus painting
-        Font buttonFont = startButton.getFont().deriveFont(80f);
-        startButton.setFont(buttonFont);
-        startButton.setBorder(BorderFactory.createEmptyBorder(30, 70, 30, 70)); // Set button border with padding
+        // Add components to the title panel
+        titlePanel.add(Box.createVerticalStrut(10)); // Adjust the space between the text and the image
+        titlePanel.add(labyrinthImage); // Add image below the text
 
-        startButton.addActionListener(e -> {
-            // Replace components with game menu
+        // Add title panel to the main panel
+        mainPanel.add(titlePanel, BorderLayout.CENTER); // Add title panel to the center
+    }
+
+    private void startTimer() {
+        Timer timer = new Timer(5000, e -> {
+            // Replace components with game menu after 5 seconds
             mainPanel.removeAll(); // Remove all components from the panel
             addGameMenu(); // Add game menu components
             revalidate(); // Refresh the frame
             repaint(); // Repaint the frame
         });
-
-        // Add components to the panel
-        mainPanel.add(titlePanel, BorderLayout.NORTH); // Add title panel to the top
-        mainPanel.add(labyrinthImage, BorderLayout.CENTER);
-
-        // Create a panel for the button to control its size
-        JPanel buttonPanel = new JPanel();
-        buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.Y_AXIS));
-        buttonPanel.setOpaque(false); // Make button panel transparent
-
-        // Add some vertical space above and below the button
-        buttonPanel.add(Box.createVerticalStrut(20)); // Adjust the vertical space above the button
-        startButton.setAlignmentX(Component.CENTER_ALIGNMENT); // Center the button
-        buttonPanel.add(startButton); // Add button to button panel
-        buttonPanel.add(Box.createVerticalStrut(90)); // Add space below the button
-
-        mainPanel.add(buttonPanel, BorderLayout.SOUTH); // Add button panel to the main panel
+        timer.setRepeats(false); // Only execute once
+        timer.start(); // Start the timer
     }
 
     private void addGameMenu() {
@@ -126,7 +118,6 @@ public class SplashScreen extends JFrame {
             g2.dispose();
         }
     }
-
 
     public JPanel getPanel() {
         return mainPanel;
