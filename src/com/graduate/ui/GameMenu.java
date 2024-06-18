@@ -62,7 +62,7 @@ public class GameMenu extends JPanel {
         titlePanel.add(titleEscape); // Add title label for "ESCAPE THE" to the top
 
         // Create a labyrinth image label
-        JLabel labyrinthImage = new JLabel(new ImageIcon("src/resources/LABYRINTH.png"));
+        JLabel labyrinthImage = new JLabel(new ImageIcon("src/resources/images/LABYRINTH.png"));
         labyrinthImage.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         // Create a main panel to hold both titlePanel and labyrinthImage

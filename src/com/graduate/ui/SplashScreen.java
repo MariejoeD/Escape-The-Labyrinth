@@ -56,7 +56,7 @@ public class SplashScreen extends JFrame {
         titleEscape.setAlignmentX(Component.CENTER_ALIGNMENT);
         titlePanel.add(titleEscape); // Add title label for "ESCAPE"
 
-        JLabel labyrinthImage = new JLabel(new ImageIcon("src/resources/LABYRINTH.png"), SwingConstants.CENTER); // Create image label
+        JLabel labyrinthImage = new JLabel(new ImageIcon("src/resources/images/LABYRINTH.png"), SwingConstants.CENTER); // Create image label
 
         JButton startButton = new JButton("START GAME"); // Create start button
         startButton.setBackground(new Color(0x545454)); // Set button background color
