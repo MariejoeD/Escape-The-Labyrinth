@@ -1,5 +1,7 @@
 package com.graduate.ui;
 
+import com.graduate.util.SoundPlayer;
+
 import javax.swing.*;
 import java.awt.*;
 import java.io.File;
@@ -17,6 +19,7 @@ public class SplashScreen extends JFrame {
         add(mainPanel);
         setVisible(true);
         startSplashScreenTimer();
+        SoundPlayer.loopSound("src/resources/sounds/menu-sound.wav");
     }
 
     private void initializeFrame() {
