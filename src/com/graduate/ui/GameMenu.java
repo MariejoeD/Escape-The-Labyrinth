@@ -15,7 +15,6 @@ public class GameMenu extends JPanel {
         setLayout(new BorderLayout());
         loadCustomFont();
         addTitlePanel();
-        addCenterPanel();
         addButtonsPanel();
     }
 
@@ -33,26 +32,18 @@ public class GameMenu extends JPanel {
         titleEscape.setForeground(Color.BLACK);
         titleEscape.setFont(arcadeFont.deriveFont(90f));
 
+        JLabel labyrinthImage = new JLabel(new ImageIcon("src/resources/images/LABYRINTH.png"));
+        labyrinthImage.setAlignmentX(Component.CENTER_ALIGNMENT);
+
         JPanel titlePanel = new JPanel();
         titlePanel.setOpaque(false);
         titlePanel.setLayout(new BoxLayout(titlePanel, BoxLayout.Y_AXIS));
         titleEscape.setAlignmentX(Component.CENTER_ALIGNMENT);
         titlePanel.add(titleEscape);
+        titlePanel.add(Box.createVerticalStrut(10)); // Add space between a text and image
+        titlePanel.add(labyrinthImage);
 
-        add(titlePanel, BorderLayout.NORTH);
-    }
-
-    private void addCenterPanel() {
-        JLabel labyrinthImage = new JLabel(new ImageIcon("src/resources/images/LABYRINTH.png"));
-        labyrinthImage.setAlignmentX(Component.CENTER_ALIGNMENT);
-
-        JPanel mainPanel = new JPanel();
-        mainPanel.setOpaque(false);
-        mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
-        mainPanel.add(Box.createVerticalStrut(10));
-        mainPanel.add(labyrinthImage);
-
-        add(mainPanel, BorderLayout.CENTER);
+        add(titlePanel, BorderLayout.CENTER);
     }
 
     private void addButtonsPanel() {
