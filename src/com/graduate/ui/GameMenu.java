@@ -40,7 +40,7 @@ public class GameMenu extends JPanel {
         titlePanel.setLayout(new BoxLayout(titlePanel, BoxLayout.Y_AXIS));
 
         // Add a vertical strut to create space above the title
-        titlePanel.add(Box.createVerticalStrut(80)); // Adjust the value as needed
+        titlePanel.add(Box.createVerticalStrut(70)); // Adjust the value as needed
 
         titleEscape.setAlignmentX(Component.CENTER_ALIGNMENT);
         titlePanel.add(titleEscape);
@@ -53,6 +53,7 @@ public class GameMenu extends JPanel {
     private void addButtonsPanel() {
         JButton startButton = createStyledButton("START", arcadeFont, e -> handleStartButtonClick());
         JButton settingsButton = createStyledButton("SETTINGS", arcadeFont, e -> handleSettingsButtonClick());
+        JButton quitButton = createStyledButton("QUIT GAME", arcadeFont, e -> handleQuitButtonClick());
 
         JPanel buttonPanel = new JPanel();
         buttonPanel.setOpaque(false);
@@ -60,11 +61,24 @@ public class GameMenu extends JPanel {
         buttonPanel.add(startButton);
         buttonPanel.add(Box.createVerticalStrut(30));
         buttonPanel.add(settingsButton);
-        buttonPanel.add(Box.createVerticalStrut(200));
+        buttonPanel.add(Box.createVerticalStrut(30));
+        buttonPanel.add(quitButton);
+
+        // Add a vertical strut to create space below the buttons
+        buttonPanel.add(Box.createVerticalStrut(120));
+
+        // Add a vertical strut to create space between the title panel and the button panel
+        JPanel combinedPanel = new JPanel();
+        combinedPanel.setOpaque(false);
+        combinedPanel.setLayout(new BoxLayout(combinedPanel, BoxLayout.Y_AXIS));
+        combinedPanel.add(Box.createVerticalGlue());
+        combinedPanel.add(Box.createVerticalStrut(50)); // Add space between title and buttons
+        combinedPanel.add(buttonPanel);
+        combinedPanel.add(Box.createVerticalGlue());
 
         JPanel centeredPanel = new JPanel(new GridBagLayout());
         centeredPanel.setOpaque(false);
-        centeredPanel.add(buttonPanel);
+        centeredPanel.add(combinedPanel);
 
         add(centeredPanel, BorderLayout.SOUTH);
     }
@@ -111,6 +125,10 @@ public class GameMenu extends JPanel {
         add(settings);
         revalidate();
         repaint();
+    }
+
+    private void handleQuitButtonClick() {
+        System.exit(0);
     }
 
     static class ShadowText extends JLabel {
