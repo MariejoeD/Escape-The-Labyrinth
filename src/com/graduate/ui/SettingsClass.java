@@ -5,7 +5,7 @@ import java.awt.*;
 
 public class SettingsClass extends JPanel {
 
-    private Font arcadeFont;
+    private final Font arcadeFont;
 
     public SettingsClass(Font arcadeFont) {
         this.arcadeFont = arcadeFont;
@@ -16,7 +16,7 @@ public class SettingsClass extends JPanel {
     }
 
     private void addTitlePanel() {
-        JLabel settingsTitle = createTitleLabel("SETTINGS");
+        JLabel settingsTitle = createTitleLabel();
 
         JPanel titlePanel = new JPanel();
         titlePanel.setOpaque(false);
@@ -28,8 +28,8 @@ public class SettingsClass extends JPanel {
         add(titlePanel, BorderLayout.NORTH);
     }
 
-    private JLabel createTitleLabel(String text) {
-        JLabel titleLabel = new JLabel(text);
+    private JLabel createTitleLabel() {
+        JLabel titleLabel = new JLabel("SETTINGS");
         titleLabel.setFont(arcadeFont.deriveFont(108f));
         titleLabel.setForeground(Color.BLACK);
         titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
