@@ -1,101 +1,103 @@
 package com.graduate.ui;
 
-
 import javax.swing.*;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 
+// Entry point for the splash screen application
 public class SplashScreen extends JFrame {
 
-    private JPanel mainPanel;
+    private final JPanel mainPanel;
 
-    // Constructor
     public SplashScreen() {
-        initializeFrame(); // Initialize frame properties
-        mainPanel = new JPanel(new BorderLayout()); // Create the main panel
-        addComponents();   // Add components to the main panel
-        add(mainPanel); // Add main panel to the frame
-        setVisible(true); // Make the frame visible
-        startTimer(); // Start the 5-second timer
+        initializeFrame();
+        mainPanel = new JPanel(new BorderLayout());
+        addComponentsToMainPanel();
+        add(mainPanel);
+        setVisible(true);
+        startSplashScreenTimer();
     }
 
-    // Method to initialize frame properties
     private void initializeFrame() {
-        // Get screen size
-        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        setExtendedState(JFrame.MAXIMIZED_BOTH);
+        setUndecorated(true);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setTitle("Escape The Labyrinth");
+        setResizable(false);
+        setLocationRelativeTo(null);
+        loadCustomFont();
+    }
 
-        // Set frame properties
-        setExtendedState(JFrame.MAXIMIZED_BOTH); // Set frame to fullscreen
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // Default close operation
-        setTitle(""); // Set frame title
-        setResizable(false); // Disable frame resizing
-        setLocationRelativeTo(null); // Center the frame on the screen
+    private void loadCustomFont() {
         try {
-            // Load custom font
-            Font arcadeFont = Font.createFont(Font.TRUETYPE_FONT, new File("src/Resources/arcade_ya/ARCADE_N.TTF")).deriveFont(96f);
-            GraphicsEnvironment.getLocalGraphicsEnvironment().registerFont(arcadeFont); // Register the font
-            UIManager.put("Label.font", arcadeFont); // Set default font for JLabel
-            UIManager.put("Button.font", arcadeFont.deriveFont(24f)); // Set default font for JButton with smaller size
+            Font arcadeFont = Font.createFont(Font.TRUETYPE_FONT, new File("src/Resources/arcade_ya/ARCADE_N.TTF")).deriveFont((float) 96.0);
+            GraphicsEnvironment.getLocalGraphicsEnvironment().registerFont(arcadeFont);
+            UIManager.put("Label.font", arcadeFont);
+            UIManager.put("Button.font", arcadeFont.deriveFont((float) 24.0));
         } catch (IOException | FontFormatException e) {
             e.printStackTrace();
-            // Handle font loading exception
         }
     }
 
-    public void addComponents() {
-        mainPanel.setBackground(new Color(0x5CE1E6)); // Set panel background color to #5CE1E6
+    private void addComponentsToMainPanel() {
+        mainPanel.setBackground(new Color(0x5CE1E6));
+        mainPanel.add(createTitlePanel(), BorderLayout.CENTER);
+    }
 
-        // Create title labels with shadow effect
-        ShadowText titleEscape = new ShadowText("ESCAPE THE", SwingConstants.CENTER, 5, 5);
-        titleEscape.setForeground(Color.black); // Set title text color
-        titleEscape.setFont(titleEscape.getFont().deriveFont(90f)); // Set bigger font size for "ESCAPE THE"
-
-        // Create panel to hold the title labels and center them vertically
+    private JPanel createTitlePanel() {
         JPanel titlePanel = new JPanel();
         titlePanel.setLayout(new BoxLayout(titlePanel, BoxLayout.Y_AXIS));
-        titlePanel.setOpaque(false); // Make title panel transparent
+        titlePanel.setOpaque(false);
 
-        // Add vertical space above the title
-        titlePanel.add(Box.createVerticalStrut(200)); // Adjust the space as needed
-        titleEscape.setAlignmentX(Component.CENTER_ALIGNMENT);
-        titlePanel.add(titleEscape); // Add title label for "ESCAPE THE"
+        titlePanel.add(Box.createVerticalStrut(300));
+        titlePanel.add(createShadowTextLabel());
+        titlePanel.add(Box.createVerticalStrut(10));
+        titlePanel.add(createImageLabel());
 
-        JLabel labyrinthImage = new JLabel(new ImageIcon("src/resources/images/LABYRINTH.png"), SwingConstants.CENTER); // Create image label
-        labyrinthImage.setAlignmentX(Component.CENTER_ALIGNMENT);
-
-        // Add components to the title panel
-        titlePanel.add(Box.createVerticalStrut(10)); // Adjust the space between the text and the image
-        titlePanel.add(labyrinthImage); // Add image below the text
-
-        // Add title panel to the main panel
-        mainPanel.add(titlePanel, BorderLayout.CENTER); // Add title panel to the center
+        return titlePanel;
     }
 
-    private void startTimer() {
+    private ShadowTextLabel createShadowTextLabel() {
+        ShadowTextLabel shadowTextLabel = new ShadowTextLabel("ESCAPE THE", SwingConstants.CENTER, 5, 5);
+        shadowTextLabel.setForeground(Color.BLACK);
+        shadowTextLabel.setFont(shadowTextLabel.getFont().deriveFont((float) 90.0));
+        shadowTextLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        return shadowTextLabel;
+    }
+
+    private JLabel createImageLabel() {
+        JLabel imageLabel = new JLabel(new ImageIcon("src/resources/images/LABYRINTH.png"), SwingConstants.CENTER);
+        imageLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        return imageLabel;
+    }
+
+    private void startSplashScreenTimer() {
         Timer timer = new Timer(5000, e -> {
-            // Replace components with game menu after 5 seconds
-            mainPanel.removeAll(); // Remove all components from the panel
-            addGameMenu(); // Add game menu components
-            revalidate(); // Refresh the frame
-            repaint(); // Repaint the frame
+            mainPanel.removeAll();
+            addGameMenuToMainPanel();
+            revalidate();
+            repaint();
         });
-        timer.setRepeats(false); // Only execute once
-        timer.start(); // Start the timer
+        timer.setRepeats(false);
+        timer.start();
     }
 
-    private void addGameMenu() {
-        GameMenu gameMenu = new GameMenu(this);
+    private void addGameMenuToMainPanel() {
+        GameMenu gameMenu = new GameMenu();
         mainPanel.add(gameMenu, BorderLayout.CENTER);
     }
 
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(SplashScreen::new);
+    }
+
     // Custom JLabel class for text with shadow effect
-    class ShadowText extends JLabel {
+    static class ShadowTextLabel extends JLabel {
+        private final int shadowOffsetX;
+        private final int shadowOffsetY;
 
-        private int shadowOffsetX;
-        private int shadowOffsetY;
-
-        public ShadowText(String text, int horizontalAlignment, int shadowOffsetX, int shadowOffsetY) {
+        public ShadowTextLabel(String text, int horizontalAlignment, int shadowOffsetX, int shadowOffsetY) {
             super(text, horizontalAlignment);
             this.shadowOffsetX = shadowOffsetX;
             this.shadowOffsetY = shadowOffsetY;
@@ -104,22 +106,16 @@ public class SplashScreen extends JFrame {
         @Override
         protected void paintComponent(Graphics g) {
             Graphics2D g2 = (Graphics2D) g.create();
-            g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
-            g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_OFF);
+            g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+            g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 
-            // Draw shadow
-            g2.setColor(Color.GRAY); // Shadow color
+            g2.setColor(Color.GRAY);
             g2.drawString(getText(), shadowOffsetX, getHeight() - shadowOffsetY);
 
-            // Draw text
-            g2.setColor(getForeground()); // Text color
+            g2.setColor(getForeground());
             g2.drawString(getText(), 0, getHeight() - shadowOffsetY);
 
             g2.dispose();
         }
-    }
-
-    public JPanel getPanel() {
-        return mainPanel;
     }
 }
