@@ -2,7 +2,6 @@ package com.graduate.ui;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
 
@@ -35,7 +34,7 @@ public class ChangeThemeScreen extends JPanel {
         JPanel titlePanel = new JPanel();
         titlePanel.setOpaque(false);
         titlePanel.setLayout(new BoxLayout(titlePanel, BoxLayout.Y_AXIS));
-        titlePanel.add(Box.createVerticalStrut(50)); // Space above title
+        titlePanel.add(Box.createVerticalStrut(50)); // The space above title
         titleTheme.setAlignmentX(Component.CENTER_ALIGNMENT);
         titlePanel.add(titleTheme);
         titlePanel.add(Box.createVerticalStrut(50)); // Space below title

@@ -5,7 +5,7 @@ import javax.swing.*;
 public class GameOverScreenTest {
 
     public static void main(String[] args) {
-        // Create a new JFrame to hold the game over screen
+        // Create a new JFrame to hold the game over the screen
         JFrame frame = new JFrame("Game Over Screen Test");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 

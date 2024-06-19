@@ -55,7 +55,7 @@ public class GameOverScreen extends JPanel {
         JPanel titleContainer = new JPanel();
         titleContainer.setOpaque(false);
         titleContainer.setLayout(new BoxLayout(titleContainer, BoxLayout.Y_AXIS));
-        titleContainer.add(Box.createVerticalStrut(90)); // Space above title
+        titleContainer.add(Box.createVerticalStrut(90)); // The space above title
         titleContainer.add(titlePanel);
         titleContainer.add(Box.createVerticalStrut(50)); // Space below title
 
