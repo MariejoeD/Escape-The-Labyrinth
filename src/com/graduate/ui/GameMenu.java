@@ -44,7 +44,7 @@ public class GameMenu extends JPanel {
 
         titleEscape.setAlignmentX(Component.CENTER_ALIGNMENT);
         titlePanel.add(titleEscape);
-        titlePanel.add(Box.createVerticalStrut(10)); // Add space between text and image
+        titlePanel.add(Box.createVerticalStrut(10)); // Add space between a text and image
         titlePanel.add(labyrinthImage);
 
         add(titlePanel, BorderLayout.CENTER);
