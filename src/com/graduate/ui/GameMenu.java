@@ -120,7 +120,7 @@ public class GameMenu extends JPanel {
     }
 
     private void handleSettingsButtonClick() {
-        SettingsClass settings = new SettingsClass(arcadeFont);
+        SettingsScreen settings = new SettingsScreen(arcadeFont);
         removeAll();
         add(settings);
         revalidate();

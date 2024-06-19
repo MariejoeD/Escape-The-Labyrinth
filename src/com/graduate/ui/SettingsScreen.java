@@ -4,12 +4,12 @@ import com.graduate.util.SoundPlayer;
 import javax.swing.*;
 import java.awt.*;
 
-public class SettingsClass extends JPanel {
+public class SettingsScreen extends JPanel {
 
     private final Font arcadeFont;
     private JButton soundButton;
 
-    public SettingsClass(Font arcadeFont) {
+    public SettingsScreen(Font arcadeFont) {
         this.arcadeFont = arcadeFont;
         setBackground(new Color(0x5CE1E6));
         setLayout(new BorderLayout());
