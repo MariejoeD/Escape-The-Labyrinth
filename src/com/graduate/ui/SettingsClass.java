@@ -1,9 +1,8 @@
 package com.graduate.ui;
 
+import com.graduate.util.SoundPlayer;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 public class SettingsClass extends JPanel {
 
@@ -16,6 +15,7 @@ public class SettingsClass extends JPanel {
         setLayout(new BorderLayout());
         addTitlePanel();
         addSettingsButtonsPanel();
+        updateSoundButton();
     }
 
     private void addTitlePanel() {
@@ -58,10 +58,15 @@ public class SettingsClass extends JPanel {
     }
 
     private void toggleSound() {
-        if ("SOUND: ON".equals(soundButton.getText())) {
-            soundButton.setText("SOUND: OFF");
-        } else {
+        SoundPlayer.setSoundOn(!SoundPlayer.isSoundOn());
+        updateSoundButton();
+    }
+
+    private void updateSoundButton() {
+        if (SoundPlayer.isSoundOn()) {
             soundButton.setText("SOUND: ON");
+        } else {
+            soundButton.setText("SOUND: OFF");
         }
     }
 

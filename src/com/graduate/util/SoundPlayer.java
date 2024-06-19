@@ -7,13 +7,16 @@ import javax.sound.sampled.*;
 public class SoundPlayer {
 
     private static Clip clip;
+    private static boolean soundOn = true; // Global sound state
 
     public static void playSound(String soundFile) {
+        if (!soundOn) return; // Check global sound state before playing
+
         try {
             File soundPath = new File(soundFile);
             if (soundPath.exists()) {
                 AudioInputStream audioInput = AudioSystem.getAudioInputStream(soundPath);
-                Clip clip = AudioSystem.getClip();
+                clip = AudioSystem.getClip();
                 clip.open(audioInput);
                 clip.start();
             } else {
@@ -25,6 +28,8 @@ public class SoundPlayer {
     }
 
     public static void loopSound(String soundFile) {
+        if (!soundOn) return; // Check global sound state before looping
+
         try {
             File soundPath = new File(soundFile);
             if (soundPath.exists()) {
@@ -41,9 +46,28 @@ public class SoundPlayer {
         }
     }
 
-    public void stopSound() {
+    public static void stopSound() {
         if (clip != null && clip.isRunning()) {
             clip.stop();
         }
+    }
+
+    public static void restartSound() {
+        if (soundOn && clip != null) {
+            clip.start();
+        }
+    }
+
+    public static void setSoundOn(boolean soundOn) {
+        SoundPlayer.soundOn = soundOn;
+        if (soundOn) {
+            restartSound();
+        } else {
+            stopSound();
+        }
+    }
+
+    public static boolean isSoundOn() {
+        return soundOn;
     }
 }
