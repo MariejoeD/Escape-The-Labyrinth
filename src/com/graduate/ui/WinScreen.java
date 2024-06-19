@@ -1,5 +1,6 @@
 package com.graduate.ui;
 
+import com.graduate.util.SoundPlayer;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
@@ -16,6 +17,9 @@ public class WinScreen extends JPanel {
         loadCustomFont();
         addTitlePanel();
         addPromptAndButtonsPanel();
+        if (SoundPlayer.isSoundOn()) {
+            SoundPlayer.playSound("src/resources/sounds/win-sound.wav");
+        }
     }
 
     private void loadCustomFont() {
@@ -51,7 +55,7 @@ public class WinScreen extends JPanel {
         JPanel titleContainer = new JPanel();
         titleContainer.setOpaque(false);
         titleContainer.setLayout(new BoxLayout(titleContainer, BoxLayout.Y_AXIS));
-        titleContainer.add(Box.createVerticalStrut(90)); // Space above title
+        titleContainer.add(Box.createVerticalStrut(90)); // The space above title
         titleContainer.add(titlePanel);
         titleContainer.add(Box.createVerticalStrut(50)); // Space below title
 
