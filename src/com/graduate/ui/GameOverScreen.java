@@ -1,5 +1,6 @@
 package com.graduate.ui;
 
+import com.graduate.util.SoundPlayer;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
@@ -16,6 +17,9 @@ public class GameOverScreen extends JPanel {
         loadCustomFont();
         addTitlePanel();
         addPromptAndButtonsPanel();
+        if (SoundPlayer.isSoundOn()) {
+            SoundPlayer.playSound("src/resources/sounds/lose-sound.wav");
+        }
     }
 
     private void loadCustomFont() {
