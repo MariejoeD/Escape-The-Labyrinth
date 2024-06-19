@@ -2,10 +2,13 @@ package com.graduate.ui;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class SettingsClass extends JPanel {
 
     private final Font arcadeFont;
+    private JButton soundButton;
 
     public SettingsClass(Font arcadeFont) {
         this.arcadeFont = arcadeFont;
@@ -40,15 +43,26 @@ public class SettingsClass extends JPanel {
         JPanel buttonPanel = new JPanel();
         buttonPanel.setOpaque(false);
         buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.Y_AXIS));
-        buttonPanel.add(Box.createVerticalStrut(90), BorderLayout.NORTH);
+        buttonPanel.add(Box.createVerticalStrut(90)); // Space above buttons
 
-        buttonPanel.add(createStyledButton("SOUND: ON"));
+        soundButton = createStyledButton("SOUND: ON");
+        soundButton.addActionListener(e -> toggleSound());
+
+        buttonPanel.add(soundButton);
         buttonPanel.add(Box.createVerticalStrut(20)); // Space between buttons
         buttonPanel.add(createStyledButton("THEME"));
         buttonPanel.add(Box.createVerticalStrut(20)); // Space between buttons
         buttonPanel.add(createStyledButton("CHARACTER"));
 
         add(buttonPanel, BorderLayout.CENTER);
+    }
+
+    private void toggleSound() {
+        if ("SOUND: ON".equals(soundButton.getText())) {
+            soundButton.setText("SOUND: OFF");
+        } else {
+            soundButton.setText("SOUND: ON");
+        }
     }
 
     private JButton createStyledButton(String text) {
