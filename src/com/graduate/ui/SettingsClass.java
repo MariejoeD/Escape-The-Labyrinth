@@ -5,52 +5,60 @@ import java.awt.*;
 
 public class SettingsClass extends JPanel {
 
+    private Font arcadeFont;
+
     public SettingsClass(Font arcadeFont) {
-        // Create title label for settings
-        JLabel settingsTitle = new JLabel("SETTINGS");
-        settingsTitle.setFont(arcadeFont.deriveFont(120f)); // Set font size for settings title
-        settingsTitle.setForeground(Color.BLACK); // Set text color
-        settingsTitle.setHorizontalAlignment(SwingConstants.CENTER); // Center the text
-
-        // Create buttons for settings
-        JButton soundButton = createStyledButton("SOUND: ON", arcadeFont);
-        JButton themeButton = createStyledButton("THEME", arcadeFont);
-        JButton characterButton = createStyledButton("CHARACTER", arcadeFont);
-
-        // Create panel for settings buttons with vertical spacing
-        JPanel settingsPanel = new JPanel();
-        settingsPanel.setLayout(new BoxLayout(settingsPanel, BoxLayout.Y_AXIS));
-        settingsPanel.setOpaque(false); // Make settings panel transparent
-        settingsPanel.add(soundButton);
-        settingsPanel.add(Box.createVerticalStrut(20)); // Add space between buttons
-        settingsPanel.add(themeButton);
-        settingsPanel.add(Box.createVerticalStrut(20)); // Add space between buttons
-        settingsPanel.add(characterButton);
-
-        // Create container panel to properly position the title and buttons
-        JPanel containerPanel = new JPanel();
-        containerPanel.setLayout(new BorderLayout());
-        containerPanel.setOpaque(false);
-        containerPanel.add(Box.createVerticalStrut(50), BorderLayout.NORTH); // Space above settings text
-        containerPanel.add(settingsTitle, BorderLayout.CENTER);
-        containerPanel.add(Box.createVerticalStrut(150), BorderLayout.SOUTH); // Space below settings text
-
-        // Add components to the main panel
-        setLayout(new BorderLayout()); // Set layout for the panel
-        setBackground(new Color(0x5CE1E6)); // Set background color
-        add(containerPanel, BorderLayout.NORTH); // Add container panel to the top
-        add(settingsPanel, BorderLayout.CENTER); // Add settings buttons to the center
+        this.arcadeFont = arcadeFont;
+        setBackground(new Color(0x5CE1E6));
+        setLayout(new BorderLayout());
+        addTitlePanel();
+        addSettingsButtonsPanel();
     }
 
-    // Method to create styled buttons
-    private JButton createStyledButton(String text, Font font) {
+    private void addTitlePanel() {
+        JLabel settingsTitle = createTitleLabel("SETTINGS");
+
+        JPanel titlePanel = new JPanel();
+        titlePanel.setOpaque(false);
+        titlePanel.setLayout(new BorderLayout());
+        titlePanel.add(Box.createVerticalStrut(90), BorderLayout.NORTH); // Space above settings title
+        titlePanel.add(settingsTitle, BorderLayout.CENTER);
+        titlePanel.add(Box.createVerticalStrut(150), BorderLayout.SOUTH); // Space below settings title
+
+        add(titlePanel, BorderLayout.NORTH);
+    }
+
+    private JLabel createTitleLabel(String text) {
+        JLabel titleLabel = new JLabel(text);
+        titleLabel.setFont(arcadeFont.deriveFont(108f));
+        titleLabel.setForeground(Color.BLACK);
+        titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        return titleLabel;
+    }
+
+    private void addSettingsButtonsPanel() {
+        JPanel buttonPanel = new JPanel();
+        buttonPanel.setOpaque(false);
+        buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.Y_AXIS));
+        buttonPanel.add(Box.createVerticalStrut(90), BorderLayout.NORTH);
+
+        buttonPanel.add(createStyledButton("SOUND: ON"));
+        buttonPanel.add(Box.createVerticalStrut(20)); // Space between buttons
+        buttonPanel.add(createStyledButton("THEME"));
+        buttonPanel.add(Box.createVerticalStrut(20)); // Space between buttons
+        buttonPanel.add(createStyledButton("CHARACTER"));
+
+        add(buttonPanel, BorderLayout.CENTER);
+    }
+
+    private JButton createStyledButton(String text) {
         JButton button = new JButton(text) {
             @Override
             protected void paintComponent(Graphics g) {
                 if (!isOpaque() && getBackground() != null) {
                     Graphics2D g2 = (Graphics2D) g.create();
                     g2.setColor(getBackground());
-                    g2.fillRoundRect(0, 0, getWidth(), getHeight(), 90, 90); // Rounded corners with radius 30
+                    g2.fillRoundRect(0, 0, getWidth(), getHeight(), 90, 90);
                     g2.dispose();
                 }
                 super.paintComponent(g);
@@ -65,9 +73,9 @@ public class SettingsClass extends JPanel {
             }
         };
 
-        button.setFont(font.deriveFont(50f));
+        button.setFont(arcadeFont.deriveFont(50f));
         button.setBackground(Color.WHITE);
-        button.setFocusPainted(false); // Disable focus painting
+        button.setFocusPainted(false);
         button.setBorder(BorderFactory.createEmptyBorder(20, 50, 20, 50));
         button.setAlignmentX(Component.CENTER_ALIGNMENT);
         button.setForeground(Color.BLACK);
