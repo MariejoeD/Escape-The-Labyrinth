@@ -42,7 +42,7 @@ public class SettingsScreen extends JPanel {
 
         titlePanel.add(topPanel, BorderLayout.NORTH);
         titlePanel.add(settingsTitle, BorderLayout.CENTER);
-        titlePanel.add(Box.createVerticalStrut(150), BorderLayout.SOUTH); // Space below settings title
+        titlePanel.add(Box.createVerticalStrut(110), BorderLayout.SOUTH); // Space below settings title
 
         add(titlePanel, BorderLayout.NORTH);
     }
@@ -66,9 +66,16 @@ public class SettingsScreen extends JPanel {
 
         buttonPanel.add(soundButton);
         buttonPanel.add(Box.createVerticalStrut(20)); // Space between buttons
-        buttonPanel.add(createStyledButton("THEME"));
+
+        JButton themeButton = createStyledButton("THEME");
+        themeButton.addActionListener(e -> navigateToChangeThemeScreen());
+        buttonPanel.add(themeButton);
+
         buttonPanel.add(Box.createVerticalStrut(20)); // Space between buttons
-        buttonPanel.add(createStyledButton("CHARACTER"));
+
+        JButton characterButton = createStyledButton("CHARACTER");
+        characterButton.addActionListener(e -> navigateToChangeCharacterScreen());
+        buttonPanel.add(characterButton);
 
         add(buttonPanel, BorderLayout.CENTER);
     }
@@ -140,6 +147,22 @@ public class SettingsScreen extends JPanel {
         JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(this);
         frame.getContentPane().removeAll();
         frame.getContentPane().add(new GameMenu()); // No need to pass arcadeFont, GameMenu loads its own font
+        frame.revalidate();
+        frame.repaint();
+    }
+
+    private void navigateToChangeThemeScreen() {
+        JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(this);
+        frame.getContentPane().removeAll();
+        frame.getContentPane().add(new ChangeThemeScreen());
+        frame.revalidate();
+        frame.repaint();
+    }
+
+    private void navigateToChangeCharacterScreen() {
+        JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(this);
+        frame.getContentPane().removeAll();
+        frame.getContentPane().add(new ChangeCharacterScreen());
         frame.revalidate();
         frame.repaint();
     }
