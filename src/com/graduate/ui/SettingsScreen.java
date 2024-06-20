@@ -24,7 +24,23 @@ public class SettingsScreen extends JPanel {
         JPanel titlePanel = new JPanel();
         titlePanel.setOpaque(false);
         titlePanel.setLayout(new BorderLayout());
-        titlePanel.add(Box.createVerticalStrut(90), BorderLayout.NORTH); // Space above settings title
+
+        // Create a panel for the back button and add it to the title panel
+        JPanel topPanel = new JPanel();
+        topPanel.setOpaque(false);
+        topPanel.setLayout(new BorderLayout());
+        JButton backButton = createBackButton();
+        backButton.addActionListener(e -> navigateBack());
+
+        // Create a container panel with padding for the back button
+        JPanel backButtonContainer = new JPanel(new BorderLayout());
+        backButtonContainer.setOpaque(false);
+        backButtonContainer.setBorder(BorderFactory.createEmptyBorder(20, 20, 0, 0)); // Add top and left space
+        backButtonContainer.add(backButton, BorderLayout.WEST);
+
+        topPanel.add(backButtonContainer, BorderLayout.WEST);
+
+        titlePanel.add(topPanel, BorderLayout.NORTH);
         titlePanel.add(settingsTitle, BorderLayout.CENTER);
         titlePanel.add(Box.createVerticalStrut(150), BorderLayout.SOUTH); // Space below settings title
 
@@ -105,5 +121,26 @@ public class SettingsScreen extends JPanel {
         button.setMinimumSize(buttonSize);
 
         return button;
+    }
+
+    private JButton createBackButton() {
+        JButton backButton = new JButton("Back");
+        backButton.setFont(arcadeFont.deriveFont(20f));
+        backButton.setForeground(Color.BLACK);
+        backButton.setBackground(Color.WHITE);
+        backButton.setFocusPainted(false);
+        backButton.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
+        backButton.setContentAreaFilled(false);
+        backButton.setOpaque(true);
+        backButton.setBorderPainted(false);
+        return backButton;
+    }
+
+    private void navigateBack() {
+        JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(this);
+        frame.getContentPane().removeAll();
+        frame.getContentPane().add(new GameMenu()); // No need to pass arcadeFont, GameMenu loads its own font
+        frame.revalidate();
+        frame.repaint();
     }
 }
