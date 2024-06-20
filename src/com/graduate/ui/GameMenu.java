@@ -39,12 +39,10 @@ public class GameMenu extends JPanel {
         titlePanel.setOpaque(false);
         titlePanel.setLayout(new BoxLayout(titlePanel, BoxLayout.Y_AXIS));
 
-        // Add a vertical strut to create space above the title
-        titlePanel.add(Box.createVerticalStrut(70)); // Adjust the value as needed
-
+        titlePanel.add(Box.createVerticalStrut(70));
         titleEscape.setAlignmentX(Component.CENTER_ALIGNMENT);
         titlePanel.add(titleEscape);
-        titlePanel.add(Box.createVerticalStrut(10)); // Add space between a text and image
+        titlePanel.add(Box.createVerticalStrut(10));
         titlePanel.add(labyrinthImage);
 
         add(titlePanel, BorderLayout.CENTER);
@@ -63,16 +61,13 @@ public class GameMenu extends JPanel {
         buttonPanel.add(settingsButton);
         buttonPanel.add(Box.createVerticalStrut(30));
         buttonPanel.add(quitButton);
-
-        // Add a vertical strut to create space below the buttons
         buttonPanel.add(Box.createVerticalStrut(120));
 
-        // Add a vertical strut to create space between the title panel and the button panel
         JPanel combinedPanel = new JPanel();
         combinedPanel.setOpaque(false);
         combinedPanel.setLayout(new BoxLayout(combinedPanel, BoxLayout.Y_AXIS));
         combinedPanel.add(Box.createVerticalGlue());
-        combinedPanel.add(Box.createVerticalStrut(50)); // Add space between title and buttons
+        combinedPanel.add(Box.createVerticalStrut(50));
         combinedPanel.add(buttonPanel);
         combinedPanel.add(Box.createVerticalGlue());
 
@@ -115,8 +110,18 @@ public class GameMenu extends JPanel {
     }
 
     private void handleStartButtonClick() {
-        StartClass start = new StartClass();
-        // Add your start logic here
+        ImageIcon easyIcon = new ImageIcon("src/resources/images/easy.png");
+        ImageIcon mediumIcon = new ImageIcon("src/resources/images/medium.png");
+        ImageIcon extremeIcon = new ImageIcon("src/resources/images/extreme.png");
+        ImageIcon timerIcon500 = new ImageIcon("src/resources/images/500.png");
+        ImageIcon timerIcon1500 = new ImageIcon("src/resources/images/1500.png");
+        ImageIcon timerIcon6000 = new ImageIcon("src/resources/images/6000.png");
+
+        StartClass start = new StartClass(arcadeFont, easyIcon, mediumIcon, extremeIcon, timerIcon500, timerIcon1500, timerIcon6000);
+        removeAll();
+        add(start);
+        revalidate();
+        repaint();
     }
 
     private void handleSettingsButtonClick() {
@@ -147,11 +152,9 @@ public class GameMenu extends JPanel {
             g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
             g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 
-            // Draw shadow
             g2.setColor(Color.GRAY);
             g2.drawString(getText(), shadowOffsetX, getHeight() - shadowOffsetY);
 
-            // Draw text
             g2.setColor(getForeground());
             g2.drawString(getText(), 0, getHeight() - shadowOffsetY);
 
