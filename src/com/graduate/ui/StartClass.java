@@ -5,22 +5,43 @@ import java.awt.*;
 
 public class StartClass extends JPanel {
 
+    private Font arcadeFont;
+
     public StartClass(Font arcadeFont, ImageIcon easyIcon, ImageIcon mediumIcon, ImageIcon extremeIcon, ImageIcon timerIcon500, ImageIcon timerIcon1500, ImageIcon timerIcon6000) {
+        this.arcadeFont = arcadeFont;
         setLayout(new BorderLayout());
         setBackground(new Color(0x5CE1E6)); // Set panel background color
 
-        // Create a title label with space above and below
+        // Create a back button
+        JButton backButton = createBackButton();
+        backButton.addActionListener(e -> navigateBack());
+
+        JPanel topPanel = new JPanel();
+        topPanel.setOpaque(false);
+        topPanel.setLayout(new BorderLayout());
+        topPanel.setBorder(BorderFactory.createEmptyBorder(10, 20, 0, 0)); // Adjust top and left space
+
+        // Create a container panel with padding for the back button
+        JPanel backButtonContainer = new JPanel(new BorderLayout());
+        backButtonContainer.setOpaque(false);
+        backButtonContainer.add(backButton, BorderLayout.NORTH);
+
+        topPanel.add(backButtonContainer, BorderLayout.WEST);
+
+        // Create a title label
         JLabel title = new JLabel("CHOOSE DIFFICULTY", SwingConstants.CENTER);
-        title.setFont(arcadeFont.deriveFont(80f));
+        title.setFont(arcadeFont.deriveFont(58f));
         title.setForeground(Color.BLACK);
 
-        JPanel titlePanel = new JPanel();
-        titlePanel.setLayout(new BorderLayout());
+        // Create panel for title
+        JPanel titlePanel = new JPanel(new BorderLayout());
         titlePanel.setOpaque(false);
-        titlePanel.add(Box.createVerticalStrut(80), BorderLayout.NORTH); // Increased space above the text
+        titlePanel.setBorder(BorderFactory.createEmptyBorder(0, 20, 0, 20)); // Adjust top and bottom padding
         titlePanel.add(title, BorderLayout.CENTER);
-        titlePanel.add(Box.createVerticalStrut(100), BorderLayout.SOUTH); // Increased space below the text
-        add(titlePanel, BorderLayout.NORTH);
+
+        add(topPanel, BorderLayout.NORTH);
+        add(titlePanel, BorderLayout.CENTER);
+
 
         // Create panel for maze difficulty levels
         JPanel mazePanel = new JPanel();
@@ -32,7 +53,20 @@ public class StartClass extends JPanel {
         mazePanel.add(createMazePanel("MEDIUM", mediumIcon, timerIcon1500, arcadeFont, new Color(0xFF9800)));
         mazePanel.add(createMazePanel("EXTREME", extremeIcon, timerIcon6000, arcadeFont, new Color(0xF44336)));
 
-        add(mazePanel, BorderLayout.CENTER);
+        add(mazePanel, BorderLayout.SOUTH);
+    }
+
+    private JButton createBackButton() {
+        JButton backButton = new JButton("Back");
+        backButton.setFont(arcadeFont.deriveFont(20f));
+        backButton.setForeground(Color.BLACK);
+        backButton.setBackground(Color.WHITE);
+        backButton.setFocusPainted(false);
+        backButton.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
+        backButton.setContentAreaFilled(false);
+        backButton.setOpaque(true);
+        backButton.setBorderPainted(false);
+        return backButton;
     }
 
     private JPanel createMazePanel(String difficulty, ImageIcon icon, ImageIcon timeIcon, Font font, Color buttonColor) {
@@ -65,7 +99,7 @@ public class StartClass extends JPanel {
                 if (!isOpaque() && getBackground() != null) {
                     Graphics2D g2 = (Graphics2D) g.create();
                     g2.setColor(getBackground());
-                    g2.fillRoundRect(0, 0, getWidth(), getHeight(), 70, 70); // Rounded corners with radius 30
+                    g2.fillRoundRect(0, 0, getWidth(), getHeight(), 70, 70); // Rounded corners with radius 70
                     g2.dispose();
                 }
                 super.paintComponent(g);
@@ -87,9 +121,12 @@ public class StartClass extends JPanel {
         button.setBorder(BorderFactory.createEmptyBorder(20, 50, 20, 50));
         return button;
     }
+
+    private void navigateBack() {
+        JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(this);
+        frame.getContentPane().removeAll();
+        frame.getContentPane().add(new GameMenu()); // No need to pass arcadeFont, GameMenu loads its own font
+        frame.revalidate();
+        frame.repaint();
+    }
 }
-
-
-
-
-

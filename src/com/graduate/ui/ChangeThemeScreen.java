@@ -27,15 +27,34 @@ public class ChangeThemeScreen extends JPanel {
     }
 
     private void addTitlePanel() {
+        // Create a panel for the back button
+        JPanel topPanel = new JPanel();
+        topPanel.setOpaque(false);
+        topPanel.setLayout(new BorderLayout());
+
+        // Create and add the back button
+        JButton backButton = createBackButton();
+        backButton.addActionListener(e -> navigateBack());
+
+        JPanel backButtonContainer = new JPanel(new BorderLayout());
+        backButtonContainer.setOpaque(false);
+        backButtonContainer.setBorder(BorderFactory.createEmptyBorder(20, 20, 0, 0)); // Add top and left space
+        backButtonContainer.add(backButton, BorderLayout.WEST);
+
+        topPanel.add(backButtonContainer, BorderLayout.WEST);
+
+        // Create the title label
         ShadowText titleTheme = new ShadowText("CHOOSE THEME", SwingConstants.CENTER, 5, 5);
         titleTheme.setForeground(Color.BLACK);
         titleTheme.setFont(arcadeFont.deriveFont(108f));
+        titleTheme.setAlignmentX(Component.CENTER_ALIGNMENT);
 
+        // Create a title panel and add components
         JPanel titlePanel = new JPanel();
         titlePanel.setOpaque(false);
         titlePanel.setLayout(new BoxLayout(titlePanel, BoxLayout.Y_AXIS));
-        titlePanel.add(Box.createVerticalStrut(50)); // The space above title
-        titleTheme.setAlignmentX(Component.CENTER_ALIGNMENT);
+        titlePanel.add(topPanel);
+        titlePanel.add(Box.createVerticalStrut(30)); // Space between back button and title
         titlePanel.add(titleTheme);
         titlePanel.add(Box.createVerticalStrut(50)); // Space below title
 
@@ -96,6 +115,27 @@ public class ChangeThemeScreen extends JPanel {
         button.setAlignmentX(Component.CENTER_ALIGNMENT);
         button.setForeground(Color.BLACK);
         return button;
+    }
+
+    private JButton createBackButton() {
+        JButton backButton = new JButton("Back");
+        backButton.setFont(arcadeFont.deriveFont(20f));
+        backButton.setForeground(Color.BLACK);
+        backButton.setBackground(Color.WHITE);
+        backButton.setFocusPainted(false);
+        backButton.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
+        backButton.setContentAreaFilled(false);
+        backButton.setOpaque(true);
+        backButton.setBorderPainted(false);
+        return backButton;
+    }
+
+    private void navigateBack() {
+        JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(this);
+        frame.getContentPane().removeAll();
+        frame.getContentPane().add(new SettingsScreen(arcadeFont));
+        frame.revalidate();
+        frame.repaint();
     }
 
     static class ShadowText extends JLabel {
