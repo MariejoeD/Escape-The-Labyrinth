@@ -29,17 +29,36 @@ public class ChangeCharacterScreen extends JPanel {
     }
 
     private void addTitlePanel() {
+        // Create a panel for the back button
+        JPanel topPanel = new JPanel();
+        topPanel.setOpaque(false);
+        topPanel.setLayout(new BorderLayout());
+
+        // Create and add the back button
+        JButton backButton = createBackButton();
+        backButton.addActionListener(e -> navigateBack());
+
+        JPanel backButtonContainer = new JPanel(new BorderLayout());
+        backButtonContainer.setOpaque(false);
+        backButtonContainer.setBorder(BorderFactory.createEmptyBorder(20, 20, 0, 0)); // Add top and left space
+        backButtonContainer.add(backButton, BorderLayout.WEST);
+
+        topPanel.add(backButtonContainer, BorderLayout.WEST);
+
+        // Create the title label
         ShadowText titleCharacter = new ShadowText("CHARACTER", SwingConstants.CENTER, 5, 5);
         titleCharacter.setForeground(Color.BLACK);
         titleCharacter.setFont(arcadeFont.deriveFont(108f));
+        titleCharacter.setAlignmentX(Component.CENTER_ALIGNMENT);
 
+        // Create a title panel and add components
         JPanel titlePanel = new JPanel();
         titlePanel.setOpaque(false);
         titlePanel.setLayout(new BoxLayout(titlePanel, BoxLayout.Y_AXIS));
-        titlePanel.add(Box.createVerticalStrut(50)); // The space above title
-        titleCharacter.setAlignmentX(Component.CENTER_ALIGNMENT);
+        titlePanel.add(topPanel);
+        titlePanel.add(Box.createVerticalStrut(30)); // Space between back button and title
         titlePanel.add(titleCharacter);
-        titlePanel.add(Box.createVerticalStrut(30)); // Space below title
+        titlePanel.add(Box.createVerticalStrut(0)); // Space below title
 
         add(titlePanel, BorderLayout.NORTH);
     }
@@ -77,9 +96,6 @@ public class ChangeCharacterScreen extends JPanel {
         add(centeredPanel, BorderLayout.CENTER);
     }
 
-
-
-
     private JPanel createCharacterPanel(String text, String imagePath, boolean centerAlignment) {
         ImageIcon icon = new ImageIcon(imagePath);
         Image scaledImage = icon.getImage().getScaledInstance(400, 300, Image.SCALE_SMOOTH); // Increase image size
@@ -114,8 +130,26 @@ public class ChangeCharacterScreen extends JPanel {
         return characterPanel;
     }
 
+    private JButton createBackButton() {
+        JButton backButton = new JButton("Back");
+        backButton.setFont(arcadeFont.deriveFont(20f));
+        backButton.setForeground(Color.BLACK);
+        backButton.setBackground(Color.WHITE);
+        backButton.setFocusPainted(false);
+        backButton.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
+        backButton.setContentAreaFilled(false);
+        backButton.setOpaque(true);
+        backButton.setBorderPainted(false);
+        return backButton;
+    }
 
-
+    private void navigateBack() {
+        JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(this);
+        frame.getContentPane().removeAll();
+        frame.getContentPane().add(new SettingsScreen(arcadeFont));
+        frame.revalidate();
+        frame.repaint();
+    }
 
     static class ShadowText extends JLabel {
         private final int shadowOffsetX;
