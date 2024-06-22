@@ -5,43 +5,38 @@ import java.awt.*;
 
 public class StartClass extends JPanel {
 
-    private Font arcadeFont;
-
     public StartClass(Font arcadeFont, ImageIcon easyIcon, ImageIcon mediumIcon, ImageIcon extremeIcon, ImageIcon timerIcon500, ImageIcon timerIcon1500, ImageIcon timerIcon6000) {
-        this.arcadeFont = arcadeFont;
         setLayout(new BorderLayout());
         setBackground(new Color(0x5CE1E6)); // Set panel background color
 
-        // Create a back button
-        JButton backButton = createBackButton();
-        backButton.addActionListener(e -> navigateBack());
+        // Create a title label with space above and below
+        JLabel title = new JLabel("CHOOSE DIFFICULTY", SwingConstants.CENTER);
+        title.setFont(arcadeFont.deriveFont(80f));
+        title.setForeground(Color.BLACK);
 
+        JPanel titlePanel = new JPanel();
+        titlePanel.setLayout(new BorderLayout());
+        titlePanel.setOpaque(false);
+
+        // Create a panel for the back button and add it to the title panel
         JPanel topPanel = new JPanel();
         topPanel.setOpaque(false);
         topPanel.setLayout(new BorderLayout());
-        topPanel.setBorder(BorderFactory.createEmptyBorder(10, 20, 0, 0)); // Adjust top and left space
+        JButton backButton = createBackButton(arcadeFont);
+        backButton.addActionListener(e -> navigateBack());
 
         // Create a container panel with padding for the back button
         JPanel backButtonContainer = new JPanel(new BorderLayout());
         backButtonContainer.setOpaque(false);
-        backButtonContainer.add(backButton, BorderLayout.NORTH);
+        backButtonContainer.setBorder(BorderFactory.createEmptyBorder(20, 20, 0, 0)); // Add top and left space
+        backButtonContainer.add(backButton, BorderLayout.WEST);
 
         topPanel.add(backButtonContainer, BorderLayout.WEST);
 
-        // Create a title label
-        JLabel title = new JLabel("CHOOSE DIFFICULTY", SwingConstants.CENTER);
-        title.setFont(arcadeFont.deriveFont(58f));
-        title.setForeground(Color.BLACK);
-
-        // Create panel for title
-        JPanel titlePanel = new JPanel(new BorderLayout());
-        titlePanel.setOpaque(false);
-        titlePanel.setBorder(BorderFactory.createEmptyBorder(0, 20, 0, 20)); // Adjust top and bottom padding
+        titlePanel.add(topPanel, BorderLayout.NORTH);
         titlePanel.add(title, BorderLayout.CENTER);
-
-        add(topPanel, BorderLayout.NORTH);
-        add(titlePanel, BorderLayout.CENTER);
-
+        titlePanel.add(Box.createVerticalStrut(100), BorderLayout.SOUTH); // Increased space below the text
+        add(titlePanel, BorderLayout.NORTH);
 
         // Create panel for maze difficulty levels
         JPanel mazePanel = new JPanel();
@@ -53,20 +48,7 @@ public class StartClass extends JPanel {
         mazePanel.add(createMazePanel("MEDIUM", mediumIcon, timerIcon1500, arcadeFont, new Color(0xFF9800)));
         mazePanel.add(createMazePanel("EXTREME", extremeIcon, timerIcon6000, arcadeFont, new Color(0xF44336)));
 
-        add(mazePanel, BorderLayout.SOUTH);
-    }
-
-    private JButton createBackButton() {
-        JButton backButton = new JButton("Back");
-        backButton.setFont(arcadeFont.deriveFont(20f));
-        backButton.setForeground(Color.BLACK);
-        backButton.setBackground(Color.WHITE);
-        backButton.setFocusPainted(false);
-        backButton.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
-        backButton.setContentAreaFilled(false);
-        backButton.setOpaque(true);
-        backButton.setBorderPainted(false);
-        return backButton;
+        add(mazePanel, BorderLayout.CENTER);
     }
 
     private JPanel createMazePanel(String difficulty, ImageIcon icon, ImageIcon timeIcon, Font font, Color buttonColor) {
@@ -122,10 +104,23 @@ public class StartClass extends JPanel {
         return button;
     }
 
+    private JButton createBackButton(Font font) {
+        JButton backButton = new JButton("Back");
+        backButton.setFont(font.deriveFont(20f));
+        backButton.setForeground(Color.BLACK);
+        backButton.setBackground(Color.WHITE);
+        backButton.setFocusPainted(false);
+        backButton.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
+        backButton.setContentAreaFilled(false);
+        backButton.setOpaque(true);
+        backButton.setBorderPainted(false);
+        return backButton;
+    }
+
     private void navigateBack() {
         JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(this);
         frame.getContentPane().removeAll();
-        frame.getContentPane().add(new GameMenu()); // No need to pass arcadeFont, GameMenu loads its own font
+        frame.getContentPane().add(new GameMenu()); // Assuming GameMenu is another JPanel
         frame.revalidate();
         frame.repaint();
     }
