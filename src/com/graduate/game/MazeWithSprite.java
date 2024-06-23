@@ -2,6 +2,10 @@ package com.graduate.game;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+
+import com.graduate.ui.BackgroundWalls;
+import com.graduate.ui.ChangeThemeScreen;
+
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
@@ -9,34 +13,40 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
-public class MazeWithSprite extends JPanel{
+public class MazeWithSprite {
     public static JPanel mazePanel = new JPanel();
     static int maxSize;
+    private static String themePath = ChangeThemeScreen.getThemePath();
+    static ImageIcon wall = new ImageIcon(themePath);
+    static Image wallImage = wall.getImage();
+
+    
 
     public static void setMaze(int[][] maze) {
         MazeWithSprite.maze = maze;
     }
 
     private static int[][] maze = {
-            {1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1},
-            {1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1},
-            {1, 0, 1, 0, 1, 1, 1, 1, 1, 0, 1},
-            {1, 0, 1, 0, 0, 0, 1, 0, 1, 0, 1},
-            {1, 0, 1, 1, 1, 0, 1, 0, 1, 0, 1},
-            {1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1},
-            {1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1},
-            {1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1},
-            {1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1},
-            {1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1},
-            {1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1},
+            { 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1 },
+            { 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1 },
+            { 1, 0, 1, 0, 1, 1, 1, 1, 1, 0, 1 },
+            { 1, 0, 1, 0, 0, 0, 1, 0, 1, 0, 1 },
+            { 1, 0, 1, 1, 1, 0, 1, 0, 1, 0, 1 },
+            { 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1 },
+            { 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1 },
+            { 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1 },
+            { 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1 },
+            { 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1 },
+            { 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1 },
     };
 
     public static void setPlayerPos(int[] playerPos) {
         MazeWithSprite.playerPos = playerPos;
     }
 
-    //    static int playerPos[0] = 5, playerPos[1] = 0; // Starting at the first 0 at the top of the maze
-    private static int[] playerPos = {5,0};
+    // static int playerPos[0] = 5, playerPos[1] = 0; // Starting at the first 0 at
+    // the top of the maze
+    private static int[] playerPos = { 5, 0 };
 
     // Load sprite sheet image
     static BufferedImage spriteSheet;
@@ -50,10 +60,10 @@ public class MazeWithSprite extends JPanel{
 
     public static void mazePanel(int x) {
         // mazePanel.setSize(x, x);
-        mazePanel.setBounds(0,0,x,x);
-        mazePanel.setLayout(null);  // Ensure that we are using absolute positioning for components
+        mazePanel.setBounds(0, 0, x, x);
+        mazePanel.setLayout(null); // Ensure that we are using absolute positioning for components
         mazePanel.setVisible(true);
-        maxSize = x;
+        maxSize = x + 2;
     }
 
     public static void map(int x, int y, int size, boolean isPlayer) {
@@ -63,12 +73,26 @@ public class MazeWithSprite extends JPanel{
                 super.paintComponent(g);
                 if (isPlayer) {
                     int spriteX = spriteRow * SPRITE_WIDTH;
-                    g.drawImage(spriteSheet.getSubimage(spriteX, 0, SPRITE_WIDTH, SPRITE_HEIGHT), 0, 0, getWidth(), getHeight(), null);
+                    g.drawImage(spriteSheet.getSubimage(spriteX, 0, SPRITE_WIDTH, SPRITE_HEIGHT), 0, 0, getWidth(),
+                            getHeight(), null);
+                }
+                else if (maze[y][x] == 1){
+                    g.drawImage(wallImage,0,0,(maxSize / size),(maxSize / size),this);
                 }
             }
         };
-        
-        panel.setBackground(maze[y][x] == 1 ? Color.black : Color.white);
+
+        if (maze[y][x] == 1) {
+            // image
+           
+            // // Create the custom panel with the ImageIcon
+            // BackgroundWalls backgroundPanel = new BackgroundWalls(wall,x,y,maxSize,size);
+            
+            // // Add the panel to your container
+            // panel.add(backgroundPanel);
+        } else {
+            panel.setBackground(Color.WHITE);
+        }
         panel.setBounds(x * (maxSize / size), y * (maxSize / size), (maxSize / size), (maxSize / size));
         mazePanel.add(panel);
     }
@@ -114,8 +138,7 @@ public class MazeWithSprite extends JPanel{
         }
     }
 
-    public static void mazeInit(int x)
-    {
+    public static void mazeInit(int x) {
         try {
             spriteSheet = ImageIO.read(new File("src\\resources\\sprites\\adam.png"));
         } catch (IOException e) {
@@ -124,7 +147,7 @@ public class MazeWithSprite extends JPanel{
         }
 
         mazePanel(x);
-    
+
         drawMaze();
 
         mazePanel.addKeyListener(new KeyAdapter() {
@@ -142,6 +165,7 @@ public class MazeWithSprite extends JPanel{
         // Adjust the mazePanel size slightly
         // mazePanel.setSize(maxSize, maxSize);
     }
+
     public static void main(String[] args) {
         mazeInit(800);
     }

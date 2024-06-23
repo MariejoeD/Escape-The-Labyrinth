@@ -72,7 +72,9 @@ public class GameScreen extends JPanel {
         JFrame frame = new JFrame("Game Screen");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        frame.setSize(1000, 600);
+        // frame.setSize(1000, 600);
+        frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        frame.setUndecorated(true);
         JPanel mainPanel = new JPanel();
         frame.addComponentListener(new ComponentAdapter() {
             @Override
@@ -87,7 +89,42 @@ public class GameScreen extends JPanel {
                 //Set Maze
                 MazeWithSprite.setMaze(StartClass.getMaze());
                 MazeWithSprite.setPlayerPos(StartClass.getPlayerPos());
-                MazeWithSprite.mazeInit(height);
+                MazeWithSprite.mazeInit(panelSize);
+                mainPanel.setBounds(x, 0, panelSize, panelSize);
+                mainPanel.setPreferredSize(new Dimension(panelSize, panelSize));
+                mainPanel.setLayout(null);
+                MazeWithSprite.mazeInit(panelSize);
+                MazeWithSprite.drawMaze(); // Assuming you have a method to redraw the maze
+
+                // Refresh the mainPanel to reflect the changes
+                mainPanel.revalidate();
+                mainPanel.repaint();
+            }
+        });
+        frame.add(mainPanel);
+        frame.add(new GameScreen());
+        mainPanel.add(MazeWithSprite.mazePanel);
+        frame.setVisible(true);
+    }
+    public static void gameStartnoSetMaze() {
+        JFrame frame = new JFrame("Game Screen");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        frame.setUndecorated(true);
+        JPanel mainPanel = new JPanel();
+        frame.addComponentListener(new ComponentAdapter() {
+            @Override
+            public void componentResized(ComponentEvent e) {
+                // Now that the frame is visible, we can safely get the size
+                Dimension contentPaneSize = frame.getContentPane().getSize();
+                int width = contentPaneSize.width;
+                int height = contentPaneSize.height;
+                int panelSize = Math.min(width, height); // Use the smaller dimension to keep the maze square
+                int x = (width - panelSize) / 2;
+                
+                //Set Maze
+                MazeWithSprite.mazeInit(panelSize);
                 mainPanel.setBounds(x, 0, panelSize, panelSize);
                 mainPanel.setPreferredSize(new Dimension(panelSize, panelSize));
                 mainPanel.setLayout(null);
@@ -103,16 +140,11 @@ public class GameScreen extends JPanel {
         frame.add(new GameScreen());
         mainPanel.add(MazeWithSprite.mazePanel);
 
-        // Ganto mag lagay bagong maze
-        // MazeWithSprite.setMaze(new int[][]{{1,1,1,1},
-        // {1,0,0,1},
-        // {1,0,0,1},
-        // {1,1,1,1}});
-        // MazeWithSprite.setPlayerPos(new int[]{1,1});
+        
 
         frame.setVisible(true);
     }
     public static void main(String[] args) {
-        gameStart();
+        gameStartnoSetMaze();
     }
 }

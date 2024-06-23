@@ -1,6 +1,9 @@
 package com.graduate.ui;
 
 import javax.swing.*;
+
+import com.graduate.game.MazeWithSprite;
+
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
@@ -8,6 +11,12 @@ import java.io.IOException;
 public class ChangeThemeScreen extends JPanel {
 
     private Font arcadeFont;
+    private static String themePath = "src/resources/walls/roygbiv_wall.png";
+    
+
+    public static String getThemePath() {
+        return themePath;
+    }
 
     public ChangeThemeScreen() {
         setBackground(new Color(0x5CE1E6));
@@ -106,6 +115,24 @@ public class ChangeThemeScreen extends JPanel {
                 setBorderPainted(false);
             }
         };
+        button.addActionListener(e ->{
+            switch(text)
+            {
+                case "MAGIC":
+                    themePath = new String("src/resources/walls/roygbiv_wall.png");
+                    break;
+                case "WOOD":
+                    themePath = new String("src/resources/walls/wood_wall.png");
+                    break;
+                case "DUNGEON":
+                    themePath = new String("src/resources/walls/dungeon_wall.png");
+                    break;
+                default:
+                    System.out.println("Error");
+                    break;
+            }
+        });
+
         button.setFont(arcadeFont.deriveFont(30f));
         button.setBackground(Color.WHITE);
         button.setFocusPainted(false);
