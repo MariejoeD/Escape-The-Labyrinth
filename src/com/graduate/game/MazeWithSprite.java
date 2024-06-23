@@ -9,6 +9,7 @@ import com.graduate.ui.ChangeThemeScreen;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -63,7 +64,9 @@ public class MazeWithSprite {
         mazePanel.setBounds(0, 0, x, x);
         mazePanel.setLayout(null); // Ensure that we are using absolute positioning for components
         mazePanel.setVisible(true);
-        maxSize = x + 2;
+        mazePanel.setFocusable(true); // Ensure the panel is focusable
+        mazePanel.requestFocusInWindow();
+        maxSize = x+2;
     }
 
     public static void map(int x, int y, int size, boolean isPlayer) {
@@ -150,6 +153,10 @@ public class MazeWithSprite {
 
         drawMaze();
 
+        for (KeyListener keyAdapter : mazePanel.getKeyListeners()) {
+            mazePanel.removeKeyListener(keyAdapter);
+        }
+
         mazePanel.addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
@@ -161,7 +168,7 @@ public class MazeWithSprite {
                 }
             }
         });
-
+        // mazePanel.requestFocusInWindow();
         // Adjust the mazePanel size slightly
         // mazePanel.setSize(maxSize, maxSize);
     }

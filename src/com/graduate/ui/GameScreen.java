@@ -104,6 +104,7 @@ public class GameScreen extends JPanel {
         frame.add(mainPanel);
         frame.add(new GameScreen());
         mainPanel.add(MazeWithSprite.mazePanel);
+        MazeWithSprite.mazePanel.requestFocusInWindow();
         frame.setVisible(true);
     }
     public static void gameStartnoSetMaze() {
@@ -139,7 +140,7 @@ public class GameScreen extends JPanel {
         frame.add(mainPanel);
         frame.add(new GameScreen());
         mainPanel.add(MazeWithSprite.mazePanel);
-
+        MazeWithSprite.mazePanel.requestFocusInWindow();
         
 
         frame.setVisible(true);
