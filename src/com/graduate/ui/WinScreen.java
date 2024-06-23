@@ -133,6 +133,11 @@ public class WinScreen extends JPanel {
     private void handleYesButtonClick() {
         // Implement your logic for the "YES" button click
         System.out.println("YES button clicked");
+        GameScreen.frame.remove(this); // 'this' refers to the current WinScreen instance
+        GameMenu gameMenu = new GameMenu(); // Create an instance of your game menu
+        GameScreen.frame.add(gameMenu); // Add the game menu to the frame
+        GameScreen.frame.revalidate();
+        GameScreen.frame.repaint();
     }
 
     private void handleNoButtonClick() {

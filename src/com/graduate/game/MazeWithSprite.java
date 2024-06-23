@@ -5,6 +5,8 @@ import javax.swing.*;
 
 import com.graduate.ui.BackgroundWalls;
 import com.graduate.ui.ChangeThemeScreen;
+import com.graduate.ui.GameScreen;
+import com.graduate.ui.WinScreen;
 
 import java.awt.*;
 import java.awt.event.KeyAdapter;
@@ -14,14 +16,14 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
-public class MazeWithSprite {
+public class MazeWithSprite extends JPanel{
     public static JPanel mazePanel = new JPanel();
     static int maxSize;
     private static String themePath = ChangeThemeScreen.getThemePath();
     static ImageIcon wall = new ImageIcon(themePath);
     static Image wallImage = wall.getImage();
 
-    
+    private static int[] finishLine = {5,10};
 
     public static void setMaze(int[][] maze) {
         MazeWithSprite.maze = maze;
@@ -66,7 +68,7 @@ public class MazeWithSprite {
         mazePanel.setVisible(true);
         mazePanel.setFocusable(true); // Ensure the panel is focusable
         mazePanel.requestFocusInWindow();
-        maxSize = x+2;
+        maxSize = x + 2;
     }
 
     public static void map(int x, int y, int size, boolean isPlayer) {
@@ -78,19 +80,18 @@ public class MazeWithSprite {
                     int spriteX = spriteRow * SPRITE_WIDTH;
                     g.drawImage(spriteSheet.getSubimage(spriteX, 0, SPRITE_WIDTH, SPRITE_HEIGHT), 0, 0, getWidth(),
                             getHeight(), null);
-                }
-                else if (maze[y][x] == 1){
-                    g.drawImage(wallImage,0,0,(maxSize / size),(maxSize / size),this);
+                } else if (maze[y][x] == 1) {
+                    g.drawImage(wallImage, 0, 0, (maxSize / size), (maxSize / size), this);
                 }
             }
         };
 
         if (maze[y][x] == 1) {
             // image
-           
+
             // // Create the custom panel with the ImageIcon
             // BackgroundWalls backgroundPanel = new BackgroundWalls(wall,x,y,maxSize,size);
-            
+
             // // Add the panel to your container
             // panel.add(backgroundPanel);
         } else {
@@ -122,13 +123,22 @@ public class MazeWithSprite {
             playerPos[1] = newY;
             updateSprite(dx, dy); // Update sprite position in the sprite sheet based on movement
             drawMaze();
-            if (newX == maze[0].length - 6 && newY == maze.length - 1) {
-                JOptionPane.showMessageDialog(mazePanel, "Congratulations! You've reached the finish line!");
-                System.exit(0);
-            }
+            
+        }
+        finish();
+    }
+    
+    public static void finish()
+    {
+        if(playerPos[0] == finishLine[0] && playerPos[1] == finishLine[1]){
+            drawMaze();
+            WinScreen win = new WinScreen();
+            GameScreen.frame.getContentPane().removeAll();
+            GameScreen.frame.getContentPane().add(win);
+            GameScreen.frame.revalidate();
+            GameScreen.frame.repaint();
         }
     }
-
     public static void updateSprite(int dx, int dy) {
         if (dx < 0) { // Moving left
             spriteRow = 2; // Adjust this based on your sprite sheet layout

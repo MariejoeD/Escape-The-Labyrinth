@@ -4,8 +4,8 @@ import javax.swing.*;
 import java.awt.*;
 
 public class GamePause extends JPanel {
-
-    public GamePause(Font arcadeFont) {
+    Font arcadeFont;
+    public GamePause() {
         // Create title label for game pause
         JLabel pauseTitle = new JLabel("GAME PAUSED");
         pauseTitle.setFont(arcadeFont.deriveFont(120f)); // Set font size for pause title
@@ -99,7 +99,7 @@ public class GamePause extends JPanel {
             frame.setUndecorated(true); // Remove window borders
 
             // Add the GamePause panel to the frame
-            frame.add(new GamePause(arcadeFont));
+            frame.add(new GamePause());
 
             // Make the frame visible
             frame.setVisible(true);
