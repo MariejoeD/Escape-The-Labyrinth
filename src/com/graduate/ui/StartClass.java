@@ -5,6 +5,17 @@ import java.awt.*;
 
 public class StartClass extends JPanel {
 
+    private static int [][] maze;
+    private static int [] playerPos;
+    
+    public static int[] getPlayerPos() {
+        return playerPos;
+    }
+
+    public static int[][] getMaze() {
+        return maze;
+    }
+
     public StartClass(Font arcadeFont, ImageIcon easyIcon, ImageIcon mediumIcon, ImageIcon extremeIcon, ImageIcon timerIcon500, ImageIcon timerIcon1500, ImageIcon timerIcon6000) {
         setLayout(new BorderLayout());
         setBackground(new Color(0x5CE1E6)); // Set panel background color
@@ -64,6 +75,24 @@ public class StartClass extends JPanel {
 
         JButton button = createRoundedButton(difficulty, font, buttonColor);
         button.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        button.addActionListener(e -> {
+            System.out.println("Button clicked: " + difficulty); // Example action: printing to console
+            // Replace the above line with whatever action you want to perform on click
+            switch(difficulty) {
+                case "EASY":
+                    maze = new int[][]{
+                        {1,1,1},
+                        {1,0,1},
+                        {1,1,1}
+                    };
+                    playerPos = new int[]{1,1};
+                    break;
+                    
+            }
+
+            GameScreen.gameStart();
+        });
 
         panel.add(mazeLabel);
         panel.add(Box.createVerticalStrut(10));

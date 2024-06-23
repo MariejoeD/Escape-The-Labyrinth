@@ -9,8 +9,8 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
-public class MazeWithSprite {
-    static JFrame frame = new JFrame();
+public class MazeWithSprite extends JPanel{
+    public static JPanel mazePanel = new JPanel();
     static int maxSize;
 
     public static void setMaze(int[][] maze) {
@@ -48,15 +48,12 @@ public class MazeWithSprite {
     // Current sprite position in the sprite sheet
     static int spriteRow = 3; // Initialize to the down sprite row
 
-    public static void frame() {
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(800, 800);
-        frame.setLocationRelativeTo(null);
-        frame.setResizable(false);
-        frame.setTitle("Maze Runner");
-        frame.setLayout(null);  // Ensure that we are using absolute positioning for components
-        frame.setVisible(true);
-        maxSize = frame.getWidth();
+    public static void mazePanel(int x) {
+        // mazePanel.setSize(x, x);
+        mazePanel.setBounds(0,0,x,x);
+        mazePanel.setLayout(null);  // Ensure that we are using absolute positioning for components
+        mazePanel.setVisible(true);
+        maxSize = x;
     }
 
     public static void map(int x, int y, int size, boolean isPlayer) {
@@ -70,21 +67,23 @@ public class MazeWithSprite {
                 }
             }
         };
+        
         panel.setBackground(maze[y][x] == 1 ? Color.black : Color.white);
         panel.setBounds(x * (maxSize / size), y * (maxSize / size), (maxSize / size), (maxSize / size));
-        frame.add(panel);
+        mazePanel.add(panel);
     }
 
     public static void drawMaze() {
         int x = maze[0].length, y = maze.length;
-        frame.getContentPane().removeAll();
+        mazePanel.removeAll();
         for (int i = 0; i < y; i++) {
             for (int j = 0; j < x; j++) {
                 map(j, i, x, (i == playerPos[1] && j == playerPos[0]));
             }
         }
-        frame.revalidate();
-        frame.repaint();
+        mazePanel.setPreferredSize(new Dimension(maxSize, maxSize));
+        mazePanel.revalidate();
+        mazePanel.repaint();
     }
 
     public static void movePlayer(int dx, int dy) {
@@ -97,7 +96,7 @@ public class MazeWithSprite {
             updateSprite(dx, dy); // Update sprite position in the sprite sheet based on movement
             drawMaze();
             if (newX == maze[0].length - 6 && newY == maze.length - 1) {
-                JOptionPane.showMessageDialog(frame, "Congratulations! You've reached the finish line!");
+                JOptionPane.showMessageDialog(mazePanel, "Congratulations! You've reached the finish line!");
                 System.exit(0);
             }
         }
@@ -115,21 +114,20 @@ public class MazeWithSprite {
         }
     }
 
-    public static void main(String[] args) {
+    public static void mazeInit(int x)
+    {
         try {
-            spriteSheet = ImageIO.read(new File("C:\\Users\\Shyrine\\IdeaProjects\\MazeLogic\\src\\resources\\adam.png"));
+            spriteSheet = ImageIO.read(new File("src\\resources\\sprites\\adam.png"));
         } catch (IOException e) {
             e.printStackTrace();
             System.exit(1);
         }
 
-        frame();
-        int[][] shit ={{1,1,1,},{1,2,1},{1,1,1}};
-        setMaze(shit);
-        setPlayerPos(new int[]{1, 1});
+        mazePanel(x);
+    
         drawMaze();
 
-        frame.addKeyListener(new KeyAdapter() {
+        mazePanel.addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
                 switch (e.getKeyCode()) {
@@ -141,7 +139,10 @@ public class MazeWithSprite {
             }
         });
 
-        // Adjust the frame size slightly
-        frame.setSize(maxSize + 6, maxSize + 30);
+        // Adjust the mazePanel size slightly
+        // mazePanel.setSize(maxSize, maxSize);
+    }
+    public static void main(String[] args) {
+        mazeInit(800);
     }
 }

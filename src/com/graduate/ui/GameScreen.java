@@ -1,7 +1,12 @@
 package com.graduate.ui;
 
 import javax.swing.*;
+
+import com.graduate.game.MazeWithSprite;
+
 import java.awt.*;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 
 public class GameScreen extends JPanel {
 
@@ -11,8 +16,10 @@ public class GameScreen extends JPanel {
 
     public GameScreen() {
         // Load the icons
-        pauseIcon = new ImageIcon(new ImageIcon("src/resources/images/pause.png").getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH));
-        hourglassIcon = new ImageIcon(new ImageIcon("src/resources/images/hourglass.png").getImage().getScaledInstance(55, 55, Image.SCALE_SMOOTH));
+        pauseIcon = new ImageIcon(new ImageIcon("src/resources/images/pause.png").getImage().getScaledInstance(100, 100,
+                Image.SCALE_SMOOTH));
+        hourglassIcon = new ImageIcon(new ImageIcon("src/resources/images/hourglass.png").getImage()
+                .getScaledInstance(55, 55, Image.SCALE_SMOOTH));
 
         // Set the background color
         setBackground(new Color(0x5CE1E6));
@@ -61,11 +68,51 @@ public class GameScreen extends JPanel {
     }
 
     // Example main method to test the UI
-    public static void main(String[] args) {
+    public static void gameStart() {
         JFrame frame = new JFrame("Game Screen");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(800, 600);
+
+        frame.setSize(1000, 600);
+        JPanel mainPanel = new JPanel();
+        frame.addComponentListener(new ComponentAdapter() {
+            @Override
+            public void componentResized(ComponentEvent e) {
+                // Now that the frame is visible, we can safely get the size
+                Dimension contentPaneSize = frame.getContentPane().getSize();
+                int width = contentPaneSize.width;
+                int height = contentPaneSize.height;
+                int panelSize = Math.min(width, height); // Use the smaller dimension to keep the maze square
+                int x = (width - panelSize) / 2;
+                
+                //Set Maze
+                MazeWithSprite.setMaze(StartClass.getMaze());
+                MazeWithSprite.setPlayerPos(StartClass.getPlayerPos());
+                MazeWithSprite.mazeInit(height);
+                mainPanel.setBounds(x, 0, panelSize, panelSize);
+                mainPanel.setPreferredSize(new Dimension(panelSize, panelSize));
+                mainPanel.setLayout(null);
+                MazeWithSprite.mazeInit(panelSize);
+                MazeWithSprite.drawMaze(); // Assuming you have a method to redraw the maze
+
+                // Refresh the mainPanel to reflect the changes
+                mainPanel.revalidate();
+                mainPanel.repaint();
+            }
+        });
+        frame.add(mainPanel);
         frame.add(new GameScreen());
+        mainPanel.add(MazeWithSprite.mazePanel);
+
+        // Ganto mag lagay bagong maze
+        // MazeWithSprite.setMaze(new int[][]{{1,1,1,1},
+        // {1,0,0,1},
+        // {1,0,0,1},
+        // {1,1,1,1}});
+        // MazeWithSprite.setPlayerPos(new int[]{1,1});
+
         frame.setVisible(true);
+    }
+    public static void main(String[] args) {
+        gameStart();
     }
 }
