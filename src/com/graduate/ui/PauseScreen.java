@@ -108,7 +108,11 @@ public class PauseScreen extends JPanel {
     }
 
     private void quitGame() {
-        System.exit(0);
+        JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(this);
+        frame.getContentPane().removeAll();
+        frame.getContentPane().add(new GameMenu());
+        frame.revalidate();
+        frame.repaint();
     }
 
     // Custom JLabel class for text with shadow effect
