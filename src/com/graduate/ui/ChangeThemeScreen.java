@@ -12,7 +12,7 @@ public class ChangeThemeScreen extends JPanel {
 
     private Font arcadeFont;
     private static String themePath = "src/resources/walls/roygbiv_wall.png";
-    
+
 
     public static String getThemePath() {
         return themePath;
@@ -115,23 +115,24 @@ public class ChangeThemeScreen extends JPanel {
                 setBorderPainted(false);
             }
         };
-        button.addActionListener(e ->{
-            switch(text)
-            {
+        button.addActionListener(e -> {
+            switch(text) {
                 case "MAGIC":
-                    themePath = new String("src/resources/walls/roygbiv_wall.png");
+                    themePath = "src/resources/walls/roygbiv_wall.png";
                     break;
                 case "WOOD":
-                    themePath = new String("src/resources/walls/wood_wall.png");
+                    themePath = "src/resources/walls/wood_wall.png";
                     break;
                 case "DUNGEON":
-                    themePath = new String("src/resources/walls/dungeon_wall.png");
+                    themePath = "src/resources/walls/dungeon_wall.png";
                     break;
                 default:
                     System.out.println("Error");
                     break;
             }
+            MazeWithSprite.updateTheme(themePath); // Notify MazeWithSprite about the theme change
         });
+
 
         button.setFont(arcadeFont.deriveFont(30f));
         button.setBackground(Color.WHITE);

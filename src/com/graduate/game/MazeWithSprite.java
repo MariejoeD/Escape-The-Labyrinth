@@ -65,6 +65,11 @@ public class MazeWithSprite extends JPanel {
         maxSize = x + 2;
     }
 
+    public static void updateTheme(String newThemePath) {
+        themePath = newThemePath;
+        drawMaze(); // Redraw the maze with the new theme
+    }
+
     public static void map(int x, int y, int size, boolean isPlayer) {
         JPanel panel = new JPanel() {
             @Override
@@ -93,6 +98,10 @@ public class MazeWithSprite extends JPanel {
     }
 
     public static void drawMaze() {
+        // Update wallImage based on the current themePath
+        wall = new ImageIcon(themePath);
+        wallImage = wall.getImage();
+
         int x = maze[0].length, y = maze.length;
         mazePanel.removeAll();
         for (int i = 0; i < y; i++) {
