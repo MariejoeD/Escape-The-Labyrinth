@@ -3,7 +3,7 @@ package com.graduate.game;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 
-import com.graduate.ui.BackgroundWalls;
+import com.graduate.ui.ChangeCharacterScreen;
 import com.graduate.ui.ChangeThemeScreen;
 import com.graduate.ui.GameScreen;
 import com.graduate.ui.WinScreen;
@@ -140,7 +140,7 @@ public class MazeWithSprite extends JPanel {
 
     public static void mazeInit(int x) {
         try {
-            spriteSheet = ImageIO.read(new File("src/resources/sprites/adam.png"));
+            spriteSheet = ImageIO.read(new File(ChangeCharacterScreen.getCharacterPath()));
         } catch (IOException e) {
             e.printStackTrace();
             System.exit(1);

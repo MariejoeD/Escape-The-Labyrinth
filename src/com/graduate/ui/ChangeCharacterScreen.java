@@ -10,6 +10,11 @@ import java.io.IOException;
 public class ChangeCharacterScreen extends JPanel {
 
     private Font arcadeFont;
+    private static String characterPath = "src/resources/sprites/adam.png"; // Default character
+
+    public static String getCharacterPath() {
+        return characterPath;
+    }
 
     public ChangeCharacterScreen() {
         setBackground(new Color(0x5CE1E6));
@@ -29,12 +34,10 @@ public class ChangeCharacterScreen extends JPanel {
     }
 
     private void addTitlePanel() {
-        // Create a panel for the back button
         JPanel topPanel = new JPanel();
         topPanel.setOpaque(false);
         topPanel.setLayout(new BorderLayout());
 
-        // Create and add the back button
         JButton backButton = createBackButton();
         backButton.addActionListener(e -> navigateBack());
 
@@ -45,13 +48,11 @@ public class ChangeCharacterScreen extends JPanel {
 
         topPanel.add(backButtonContainer, BorderLayout.WEST);
 
-        // Create the title label
         ShadowText titleCharacter = new ShadowText("CHARACTER", SwingConstants.CENTER, 5, 5);
         titleCharacter.setForeground(Color.BLACK);
         titleCharacter.setFont(arcadeFont.deriveFont(108f));
         titleCharacter.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        // Create a title panel and add components
         JPanel titlePanel = new JPanel();
         titlePanel.setOpaque(false);
         titlePanel.setLayout(new BoxLayout(titlePanel, BoxLayout.Y_AXIS));
@@ -64,39 +65,33 @@ public class ChangeCharacterScreen extends JPanel {
     }
 
     private void addCharacterOptionsPanel() {
-        // Create character option buttons
-        JPanel adamPanel = createCharacterPanel("ADAM", "src/resources/sprites/adam.png", true);
-        JPanel alexPanel = createCharacterPanel("ALEX", "src/resources/sprites/alex.png", true);
-        JPanel ameliaPanel = createCharacterPanel("AMELIA", "src/resources/sprites/amelia.png", true);
-        JPanel bobPanel = createCharacterPanel("BOB", "src/resources/sprites/bob.png", true);
+        JPanel adamPanel = createCharacterPanel("ADAM", "src/resources/sprites/adam.png");
+        JPanel alexPanel = createCharacterPanel("ALEX", "src/resources/sprites/alex.png");
+        JPanel ameliaPanel = createCharacterPanel("AMELIA", "src/resources/sprites/amelia.png");
+        JPanel bobPanel = createCharacterPanel("BOB", "src/resources/sprites/bob.png");
 
-        // Create a panel for the character options
         JPanel characterOptionsPanel = new JPanel();
         characterOptionsPanel.setOpaque(false);
         characterOptionsPanel.setLayout(new GridLayout(2, 2, 250, 40)); // Increased gaps between components
 
-        // Add character panels to the character options panel
         characterOptionsPanel.add(adamPanel);
         characterOptionsPanel.add(alexPanel);
         characterOptionsPanel.add(ameliaPanel);
         characterOptionsPanel.add(bobPanel);
 
-        // Create a centered panel to maximize the space
         JPanel centeredPanel = new JPanel(new GridBagLayout());
         centeredPanel.setBackground(new Color(0x5CE1E6)); // Match the background color
 
-        // Add characterOptionsPanel with additional space on the sides
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.insets = new Insets(0, 100, 0, 100); // Add 100 pixels of space on the left and right sides
         centeredPanel.add(characterOptionsPanel, gbc);
 
-        // Add the centered panel to the center of the ChangeCharacterScreen
         add(centeredPanel, BorderLayout.CENTER);
     }
 
-    private JPanel createCharacterPanel(String text, String imagePath, boolean centerAlignment) {
+    private JPanel createCharacterPanel(String text, String imagePath) {
         ImageIcon icon = new ImageIcon(imagePath);
         Image scaledImage = icon.getImage().getScaledInstance(400, 300, Image.SCALE_SMOOTH); // Increase image size
         ImageIcon scaledIcon = new ImageIcon(scaledImage);
@@ -104,6 +99,8 @@ public class ChangeCharacterScreen extends JPanel {
 
         JButton button = new JButton(text);
         button.setFont(arcadeFont.deriveFont(45f)); // Increase button font size
+        button.setBackground(Color.WHITE);
+        button.setFocusPainted(false);
         button.setBackground(Color.WHITE);
         button.setFocusPainted(false);
         button.setBorder(BorderFactory.createEmptyBorder(25, 25, 25, 25)); // Increase button border
@@ -114,14 +111,17 @@ public class ChangeCharacterScreen extends JPanel {
         button.setPreferredSize(new Dimension(600, 120)); // Increase button size
         button.setUI(new RoundedButtonUI());
 
+        button.addActionListener(e -> {
+            characterPath = imagePath; // Set the selected character path
+            System.out.println("Selected character: " + text); // Debugging line
+        });
+
         JPanel characterPanel = new JPanel();
         characterPanel.setLayout(new BoxLayout(characterPanel, BoxLayout.Y_AXIS));
         characterPanel.setOpaque(false);
 
-        if (centerAlignment) {
-            imageLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-            button.setAlignmentX(Component.CENTER_ALIGNMENT);
-        }
+        imageLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        button.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         characterPanel.add(imageLabel);
         characterPanel.add(Box.createVerticalStrut(20)); // Space between image and button
