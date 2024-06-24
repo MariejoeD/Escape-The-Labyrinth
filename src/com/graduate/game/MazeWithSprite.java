@@ -76,15 +76,18 @@ public class MazeWithSprite extends JPanel {
                             getHeight(), null);
                 } else if (maze[y][x] == 1) {
                     g.drawImage(wallImage, 0, 0, (maxSize / size), (maxSize / size), this);
+                } else {
+                    // Draw ground
+                    g.setColor(new Color(0x5CE1E6)); // This sets the color of the ground
+                    g.fillRect(0, 0, (maxSize / size), (maxSize / size));
                 }
             }
         };
 
-        if (maze[y][x] == 1) {
-            // Do nothing, wall is drawn in paintComponent
-        } else {
-            panel.setBackground(Color.WHITE);
+        if (maze[y][x] != 1) {
+            panel.setBackground(new Color(0x5CE1E6));
         }
+
         panel.setBounds(x * (maxSize / size), y * (maxSize / size), (maxSize / size), (maxSize / size));
         mazePanel.add(panel);
     }
