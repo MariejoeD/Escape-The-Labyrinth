@@ -78,37 +78,48 @@ public class StartClass extends JPanel {
 
         button.addActionListener(e -> {
             System.out.println("Button clicked: " + difficulty); // Example action: printing to console
-            // Replace the above line with whatever action you want to perform on click
-            switch(difficulty) {
+            int timeInSeconds = 0; // Initialize the time for each difficulty
+            switch (difficulty) {
                 case "EASY":
                     maze = new int[][]{
-                        {1,1,1},
-                        {1,0,1},
-                        {1,1,1}
+                            {1, 1, 1},
+                            {1, 0, 1},
+                            {1, 1, 1}
                     };
-                    playerPos = new int[]{1,1};
+                    playerPos = new int[]{1, 1};
+                    timeInSeconds = 5 * 60; // 5 minutes
                     break;
                 case "MEDIUM":
                     maze = new int[][]{
-                        {1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1},
-                        {1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1},
-                        {1, 0, 1, 0, 1, 1, 1, 1, 1, 0, 1},
-                        {1, 0, 1, 0, 0, 0, 1, 0, 1, 0, 1},
-                        {1, 0, 1, 1, 1, 0, 1, 0, 1, 0, 1},
-                        {1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1},
-                        {1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1},
-                        {1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1},
-                        {1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1},
-                        {1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1},
-                        {1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1},
+                            {1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1},
+                            {1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1},
+                            {1, 0, 1, 0, 1, 1, 1, 1, 1, 0, 1},
+                            {1, 0, 1, 0, 0, 0, 1, 0, 1, 0, 1},
+                            {1, 0, 1, 1, 1, 0, 1, 0, 1, 0, 1},
+                            {1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1},
+                            {1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1},
+                            {1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1},
+                            {1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1},
+                            {1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1},
+                            {1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1},
                     };
-                    playerPos = new int[]{5,0};
+                    playerPos = new int[]{5, 0};
+                    timeInSeconds = 15 * 60; // 15 minutes
                     break;
-                    
+                case "EXTREME":
+                    maze = new int[][]{
+                            {1, 1, 1},
+                            {1, 0, 1},
+                            {1, 1, 1}
+                    };
+                    playerPos = new int[]{1, 1};
+                    timeInSeconds = 60 * 60; // 60 minutes
+                    break;
             }
 
-            GameScreen.gameStart();
+            GameScreen.gameStart(timeInSeconds);
         });
+
 
         panel.add(mazeLabel);
         panel.add(Box.createVerticalStrut(10));

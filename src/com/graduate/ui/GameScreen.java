@@ -2,13 +2,14 @@ package com.graduate.ui;
 
 import javax.swing.*;
 import com.graduate.game.MazeWithSprite;
+import com.graduate.util.TimerUtil;
+
 import java.awt.*;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 
 public class GameScreen extends JPanel {
 
-    private ImageIcon pauseIcon;
     private ImageIcon hourglassIcon;
     private JLabel timerLabel;
     public static JFrame frame;
@@ -17,9 +18,11 @@ public class GameScreen extends JPanel {
     private JPanel cards;
     private CardLayout cardLayout;
     private PauseScreen pauseScreen;
+    private TimerUtil timerUtil;
+
 
     public GameScreen() {
-        pauseIcon = new ImageIcon(new ImageIcon("src/resources/images/pause.png").getImage().getScaledInstance(100, 100,
+        ImageIcon pauseIcon = new ImageIcon(new ImageIcon("src/resources/images/pause.png").getImage().getScaledInstance(100, 100,
                 Image.SCALE_SMOOTH));
         hourglassIcon = new ImageIcon(new ImageIcon("src/resources/images/hourglass.png").getImage()
                 .getScaledInstance(55, 55, Image.SCALE_SMOOTH));
@@ -76,6 +79,9 @@ public class GameScreen extends JPanel {
         add(cards, BorderLayout.CENTER);
     }
 
+    public static void gameStart() {
+    }
+
     private void togglePause() {
         if (isPaused) {
             resumeGame();
@@ -99,7 +105,7 @@ public class GameScreen extends JPanel {
         timerLabel.setText(time);
     }
 
-    public static void gameStart() {
+    public static void gameStart(int timeInSeconds) {
         frame = new JFrame("Game Screen");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -107,6 +113,7 @@ public class GameScreen extends JPanel {
         frame.setUndecorated(true);
 
         GameScreen gameScreen = new GameScreen();
+        gameScreen.startTimer(timeInSeconds); // Start the timer with the given duration
 
         frame.addComponentListener(new ComponentAdapter() {
             @Override
@@ -135,7 +142,7 @@ public class GameScreen extends JPanel {
         frame.setVisible(true);
     }
 
-    public static void gameStartnoSetMaze() {
+    public static void gameStartnoSetMaze(int timeInSeconds) {
         frame = new JFrame("Game Screen");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -143,6 +150,7 @@ public class GameScreen extends JPanel {
         frame.setUndecorated(true);
 
         GameScreen gameScreen = new GameScreen();
+        gameScreen.startTimer(timeInSeconds); // Start the timer with the given duration
 
         frame.addComponentListener(new ComponentAdapter() {
             @Override
@@ -169,7 +177,26 @@ public class GameScreen extends JPanel {
         frame.setVisible(true);
     }
 
+
+    public void startTimer(int timeInSeconds) {
+        if (timerUtil != null) {
+            timerUtil.stop();
+        }
+        timerUtil = new TimerUtil(timeInSeconds, timerLabel, this::onTimeUp);
+        timerUtil.start();
+    }
+
+    private void onTimeUp() {
+        // Handle the time up scenario (e.g., end game, show message)
+        JOptionPane.showMessageDialog(this, "Time's up!", "Game Over", JOptionPane.INFORMATION_MESSAGE);
+        // Additional actions like resetting the game can be added here
+    }
+
+
     public static void main(String[] args) {
         gameStartnoSetMaze();
+    }
+
+    private static void gameStartnoSetMaze() {
     }
 }
