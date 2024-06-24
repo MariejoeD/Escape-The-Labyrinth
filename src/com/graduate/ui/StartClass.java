@@ -87,7 +87,7 @@ public class StartClass extends JPanel {
                             {1, 1, 1}
                     };
                     playerPos = new int[]{1, 1};
-                    timeInSeconds = 5 * 60; // 5 minutes
+                    timeInSeconds = 1 * 60; // 5 minutes
                     break;
                 case "MEDIUM":
                     maze = new int[][]{

@@ -131,13 +131,28 @@ public class GameOverScreen extends JPanel {
     }
 
     private void handleYesButtonClick() {
-        // Implement your logic for the "YES" button click
-        System.out.println("YES button clicked");
+        JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(this);
+        frame.getContentPane().removeAll();
+
+        ImageIcon easyIcon = new ImageIcon("src/resources/images/easy.png");
+        ImageIcon mediumIcon = new ImageIcon("src/resources/images/medium.png");
+        ImageIcon extremeIcon = new ImageIcon("src/resources/images/extreme.png");
+        ImageIcon timerIcon500 = new ImageIcon("src/resources/images/500.png");
+        ImageIcon timerIcon1500 = new ImageIcon("src/resources/images/1500.png");
+        ImageIcon timerIcon6000 = new ImageIcon("src/resources/images/6000.png");
+
+        StartClass start = new StartClass(arcadeFont, easyIcon, mediumIcon, extremeIcon, timerIcon500, timerIcon1500, timerIcon6000);
+        frame.getContentPane().add(start);
+        frame.revalidate();
+        frame.repaint();
     }
 
     private void handleNoButtonClick() {
-        // Implement your logic for the "NO" button click
-        System.out.println("NO button clicked");
+        JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(this);
+        frame.getContentPane().removeAll();
+        frame.getContentPane().add(new GameMenu());
+        frame.revalidate();
+        frame.repaint();
     }
 
     static class ShadowText extends JLabel {

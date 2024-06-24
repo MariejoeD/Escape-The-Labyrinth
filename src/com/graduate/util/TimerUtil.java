@@ -5,36 +5,29 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class TimerUtil {
-
     private Timer timer;
-    private int timeRemaining; // time in seconds
+    private int timeRemaining;
     private JLabel timerLabel;
-    private Runnable onTimeUp;
+    private boolean isPaused = false;
+    private ActionListener onTimeUp;
 
-    public TimerUtil(int timeInSeconds, JLabel timerLabel, Runnable onTimeUp) {
+    public TimerUtil(int timeInSeconds, JLabel timerLabel, ActionListener onTimeUp) {
         this.timeRemaining = timeInSeconds;
         this.timerLabel = timerLabel;
         this.onTimeUp = onTimeUp;
-        initializeTimer();
-    }
-
-    private void initializeTimer() {
-        timer = new Timer(1000, new ActionListener() {
+        this.timer = new Timer(1000, new ActionListener() {
+            @Override
             public void actionPerformed(ActionEvent e) {
-                timeRemaining--;
-                updateTimerLabel();
-                if (timeRemaining <= 0) {
-                    timer.stop();
-                    onTimeUp.run();
+                if (!isPaused) {
+                    timeRemaining--;
+                    updateTimerLabel();
+                    if (timeRemaining <= 0) {
+                        timer.stop();
+                        onTimeUp.actionPerformed(null);
+                    }
                 }
             }
         });
-    }
-
-    private void updateTimerLabel() {
-        int minutes = timeRemaining / 60;
-        int seconds = timeRemaining % 60;
-        timerLabel.setText(String.format("%02d:%02d", minutes, seconds));
     }
 
     public void start() {
@@ -45,9 +38,22 @@ public class TimerUtil {
         timer.stop();
     }
 
-    public void reset(int timeInSeconds) {
-        this.timeRemaining = timeInSeconds;
-        updateTimerLabel();
+    public void setPaused(boolean paused) {
+        isPaused = paused;
     }
 
+    public void resume() {
+        isPaused = false;
+    }
+
+    public void updateTimerLabel() {
+        int minutes = timeRemaining / 60;
+        int seconds = timeRemaining % 60;
+        timerLabel.setText(String.format("%d:%02d", minutes, seconds));
+    }
+
+    public void restart() {
+        timer.stop();
+        timer.start();
+    }
 }

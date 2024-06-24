@@ -5,6 +5,7 @@ import com.graduate.game.MazeWithSprite;
 import com.graduate.util.TimerUtil;
 
 import java.awt.*;
+import java.awt.event.ActionEvent;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 
@@ -49,7 +50,7 @@ public class GameScreen extends JPanel {
         timerPanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 40));
 
         JLabel hourglassLabel = new JLabel(hourglassIcon);
-        timerLabel = new JLabel("2:00");
+        timerLabel = new JLabel("--:--");
         timerLabel.setFont(new Font("Consolas", Font.PLAIN, 36));
         timerLabel.setForeground(Color.BLACK);
 
@@ -93,16 +94,14 @@ public class GameScreen extends JPanel {
     private void pauseGame() {
         isPaused = true;
         cardLayout.show(cards, "Pause");
+        timerUtil.setPaused(true); // Pause the timer
     }
 
     public void resumeGame() {
         isPaused = false;
         cardLayout.show(cards, "Game");
+        timerUtil.resume(); // Resume the timer without resetting
         MazeWithSprite.mazePanel.requestFocusInWindow(); // Ensure the maze panel has focus
-    }
-
-    public void updateTimer(String time) {
-        timerLabel.setText(time);
     }
 
     public static void gameStart(int timeInSeconds) {
@@ -186,12 +185,17 @@ public class GameScreen extends JPanel {
         timerUtil.start();
     }
 
-    private void onTimeUp() {
-        // Handle the time up scenario (e.g., end game, show message)
-        JOptionPane.showMessageDialog(this, "Time's up!", "Game Over", JOptionPane.INFORMATION_MESSAGE);
-        // Additional actions like resetting the game can be added here
+    private void onTimeUp(ActionEvent actionEvent) {
+        showGameOverScreen();
     }
 
+    private void showGameOverScreen() {
+        JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(this);
+        frame.getContentPane().removeAll();
+        frame.getContentPane().add(new GameOverScreen());
+        frame.revalidate();
+        frame.repaint();
+    }
 
     public static void main(String[] args) {
         gameStartnoSetMaze();
