@@ -16,14 +16,14 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
-public class MazeWithSprite extends JPanel{
+public class MazeWithSprite extends JPanel {
     public static JPanel mazePanel = new JPanel();
     static int maxSize;
     private static String themePath = ChangeThemeScreen.getThemePath();
     static ImageIcon wall = new ImageIcon(themePath);
     static Image wallImage = wall.getImage();
 
-    private static int[] finishLine = {5,10};
+    private static int[] finishLine = {5, 10};
 
     public static void setMaze(int[][] maze) {
         MazeWithSprite.maze = maze;
@@ -47,26 +47,20 @@ public class MazeWithSprite extends JPanel{
         MazeWithSprite.playerPos = playerPos;
     }
 
-    // static int playerPos[0] = 5, playerPos[1] = 0; // Starting at the first 0 at
-    // the top of the maze
     private static int[] playerPos = { 5, 0 };
 
-    // Load sprite sheet image
     static BufferedImage spriteSheet;
 
-    // Sprite dimensions
     static final int SPRITE_WIDTH = 16;
     static final int SPRITE_HEIGHT = 32;
 
-    // Current sprite position in the sprite sheet
-    static int spriteRow = 3; // Initialize to the down sprite row
+    static int spriteRow = 3;
 
     public static void mazePanel(int x) {
-        // mazePanel.setSize(x, x);
         mazePanel.setBounds(0, 0, x, x);
-        mazePanel.setLayout(null); // Ensure that we are using absolute positioning for components
+        mazePanel.setLayout(null);
         mazePanel.setVisible(true);
-        mazePanel.setFocusable(true); // Ensure the panel is focusable
+        mazePanel.setFocusable(true);
         mazePanel.requestFocusInWindow();
         maxSize = x + 2;
     }
@@ -87,13 +81,7 @@ public class MazeWithSprite extends JPanel{
         };
 
         if (maze[y][x] == 1) {
-            // image
-
-            // // Create the custom panel with the ImageIcon
-            // BackgroundWalls backgroundPanel = new BackgroundWalls(wall,x,y,maxSize,size);
-
-            // // Add the panel to your container
-            // panel.add(backgroundPanel);
+            // Do nothing, wall is drawn in paintComponent
         } else {
             panel.setBackground(Color.WHITE);
         }
@@ -121,16 +109,14 @@ public class MazeWithSprite extends JPanel{
         if (newX >= 0 && newX < maze[0].length && newY >= 0 && newY < maze.length && maze[newY][newX] != 1) {
             playerPos[0] = newX;
             playerPos[1] = newY;
-            updateSprite(dx, dy); // Update sprite position in the sprite sheet based on movement
+            updateSprite(dx, dy);
             drawMaze();
-            
         }
         finish();
     }
-    
-    public static void finish()
-    {
-        if(playerPos[0] == finishLine[0] && playerPos[1] == finishLine[1]){
+
+    public static void finish() {
+        if (playerPos[0] == finishLine[0] && playerPos[1] == finishLine[1]) {
             drawMaze();
             WinScreen win = new WinScreen();
             GameScreen.frame.getContentPane().removeAll();
@@ -139,30 +125,33 @@ public class MazeWithSprite extends JPanel{
             GameScreen.frame.repaint();
         }
     }
+
     public static void updateSprite(int dx, int dy) {
-        if (dx < 0) { // Moving left
-            spriteRow = 2; // Adjust this based on your sprite sheet layout
-        } else if (dx > 0) { // Moving right
-            spriteRow = 0; // Adjust this based on your sprite sheet layout
-        } else if (dy < 0) { // Moving up
-            spriteRow = 1; // Adjust this based on your sprite sheet layout
-        } else if (dy > 0) { // Moving down
-            spriteRow = 3; // Adjust this based on your sprite sheet layout
+        if (dx < 0) {
+            spriteRow = 2;
+        } else if (dx > 0) {
+            spriteRow = 0;
+        } else if (dy < 0) {
+            spriteRow = 1;
+        } else if (dy > 0) {
+            spriteRow = 3;
         }
     }
 
     public static void mazeInit(int x) {
         try {
-            spriteSheet = ImageIO.read(new File("src\\resources\\sprites\\adam.png"));
+            spriteSheet = ImageIO.read(new File("src/resources/sprites/adam.png"));
         } catch (IOException e) {
             e.printStackTrace();
             System.exit(1);
         }
 
         mazePanel(x);
-
         drawMaze();
+        attachKeyListener();
+    }
 
+    private static void attachKeyListener() {
         for (KeyListener keyAdapter : mazePanel.getKeyListeners()) {
             mazePanel.removeKeyListener(keyAdapter);
         }
@@ -178,9 +167,9 @@ public class MazeWithSprite extends JPanel{
                 }
             }
         });
-        // mazePanel.requestFocusInWindow();
-        // Adjust the mazePanel size slightly
-        // mazePanel.setSize(maxSize, maxSize);
+
+        mazePanel.setFocusable(true);
+        mazePanel.requestFocusInWindow();
     }
 
     public static void main(String[] args) {

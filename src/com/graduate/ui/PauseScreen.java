@@ -2,19 +2,26 @@ package com.graduate.ui;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
 
 public class PauseScreen extends JPanel {
 
     private Font arcadeFont;
+    private GameScreen gameScreen;
 
-    public PauseScreen() {
+    public PauseScreen(GameScreen gameScreen) {
+        this.gameScreen = gameScreen;
         setBackground(new Color(0x5CE1E6));
         setLayout(new BorderLayout());
         loadCustomFont();
         addTitlePanel();
         addButtonsPanel();
+    }
+
+    public PauseScreen() {
+
     }
 
     private void loadCustomFont() {
@@ -48,16 +55,16 @@ public class PauseScreen extends JPanel {
         buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.Y_AXIS));
         buttonPanel.add(Box.createVerticalStrut(90)); // Space above buttons
 
-        buttonPanel.add(createStyledButton("RESUME"));
+        buttonPanel.add(createStyledButton("RESUME", e -> gameScreen.resumeGame()));
         buttonPanel.add(Box.createVerticalStrut(20)); // Space between buttons
-        buttonPanel.add(createStyledButton("RESTART LEVEL"));
+        buttonPanel.add(createStyledButton("RESTART LEVEL", e -> restartLevel()));
         buttonPanel.add(Box.createVerticalStrut(20)); // Space between buttons
-        buttonPanel.add(createStyledButton("QUIT GAME"));
+        buttonPanel.add(createStyledButton("QUIT GAME", e -> quitGame()));
 
         add(buttonPanel, BorderLayout.CENTER);
     }
 
-    private JButton createStyledButton(String text) {
+    private JButton createStyledButton(String text, ActionListener actionListener) {
         JButton button = new JButton(text) {
             @Override
             protected void paintComponent(Graphics g) {
@@ -91,7 +98,17 @@ public class PauseScreen extends JPanel {
         button.setMaximumSize(buttonSize);
         button.setMinimumSize(buttonSize);
 
+        button.addActionListener(actionListener);
+
         return button;
+    }
+
+    private void restartLevel() {
+        // Implement logic to restart the level
+    }
+
+    private void quitGame() {
+        System.exit(0);
     }
 
     // Custom JLabel class for text with shadow effect

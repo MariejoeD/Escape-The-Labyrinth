@@ -13,6 +13,10 @@ public class GameScreen extends JPanel {
     private JLabel timerLabel;
     public static JFrame frame;
     private static boolean isPaused = false;
+    private JPanel mainPanel;
+    private JPanel cards;
+    private CardLayout cardLayout;
+    private PauseScreen pauseScreen;
 
     public GameScreen() {
         pauseIcon = new ImageIcon(new ImageIcon("src/resources/images/pause.png").getImage().getScaledInstance(100, 100,
@@ -39,7 +43,7 @@ public class GameScreen extends JPanel {
         JPanel timerPanel = new JPanel();
         timerPanel.setOpaque(false);
         timerPanel.setLayout(new BoxLayout(timerPanel, BoxLayout.X_AXIS));
-        timerPanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 40)); 
+        timerPanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 40));
 
         JLabel hourglassLabel = new JLabel(hourglassIcon);
         timerLabel = new JLabel("2:00");
@@ -53,20 +57,43 @@ public class GameScreen extends JPanel {
         topPanel.add(timerPanel, BorderLayout.EAST);
 
         add(topPanel, BorderLayout.NORTH);
+
+        pauseScreen = new PauseScreen(this);
+
+        // Initialize the CardLayout and the cards panel
+        cardLayout = new CardLayout();
+        cards = new JPanel(cardLayout);
+
+        mainPanel = new JPanel();
+        mainPanel.setBackground(new Color(0x5CE1E6));
+        mainPanel.setLayout(new BorderLayout());
+        mainPanel.add(topPanel, BorderLayout.NORTH);
+
+        cards.add(mainPanel, "Game");
+        cards.add(pauseScreen, "Pause");
+
+        setLayout(new BorderLayout());
+        add(cards, BorderLayout.CENTER);
     }
+
     private void togglePause() {
-        pauseGame();
+        if (isPaused) {
+            resumeGame();
+        } else {
+            pauseGame();
+        }
     }
 
     private void pauseGame() {
         isPaused = true;
-        PauseScreen pause = new PauseScreen();
-        frame.getContentPane().add(pause);
-        frame.revalidate();
-        frame.repaint();
+        cardLayout.show(cards, "Pause");
     }
 
-    
+    public void resumeGame() {
+        isPaused = false;
+        cardLayout.show(cards, "Game");
+        MazeWithSprite.mazePanel.requestFocusInWindow(); // Ensure the maze panel has focus
+    }
 
     public void updateTimer(String time) {
         timerLabel.setText(time);
@@ -78,7 +105,9 @@ public class GameScreen extends JPanel {
 
         frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
         frame.setUndecorated(true);
-        JPanel mainPanel = new JPanel();
+
+        GameScreen gameScreen = new GameScreen();
+
         frame.addComponentListener(new ComponentAdapter() {
             @Override
             public void componentResized(ComponentEvent e) {
@@ -91,19 +120,18 @@ public class GameScreen extends JPanel {
                 MazeWithSprite.setMaze(StartClass.getMaze());
                 MazeWithSprite.setPlayerPos(StartClass.getPlayerPos());
                 MazeWithSprite.mazeInit(panelSize);
-                mainPanel.setBounds(x, 0, panelSize, panelSize);
-                mainPanel.setPreferredSize(new Dimension(panelSize, panelSize));
-                mainPanel.setLayout(null);
+                gameScreen.mainPanel.setBounds(x, 0, panelSize, panelSize);
+                gameScreen.mainPanel.setPreferredSize(new Dimension(panelSize, panelSize));
+                gameScreen.mainPanel.setLayout(null);
                 MazeWithSprite.mazeInit(panelSize);
                 MazeWithSprite.drawMaze();
 
-                mainPanel.revalidate();
-                mainPanel.repaint();
+                gameScreen.mainPanel.revalidate();
+                gameScreen.mainPanel.repaint();
             }
         });
-        frame.add(mainPanel);
-        frame.add(new GameScreen());
-        mainPanel.add(MazeWithSprite.mazePanel);
+        frame.add(gameScreen);
+        gameScreen.mainPanel.add(MazeWithSprite.mazePanel);
         frame.setVisible(true);
     }
 
@@ -113,7 +141,9 @@ public class GameScreen extends JPanel {
 
         frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
         frame.setUndecorated(true);
-        JPanel mainPanel = new JPanel();
+
+        GameScreen gameScreen = new GameScreen();
+
         frame.addComponentListener(new ComponentAdapter() {
             @Override
             public void componentResized(ComponentEvent e) {
@@ -124,20 +154,18 @@ public class GameScreen extends JPanel {
                 int x = (width - panelSize) / 2;
 
                 MazeWithSprite.mazeInit(panelSize);
-                mainPanel.setBounds(x, 0, panelSize, panelSize);
-                mainPanel.setPreferredSize(new Dimension(panelSize, panelSize));
-                mainPanel.setLayout(null);
+                gameScreen.mainPanel.setBounds(x, 0, panelSize, panelSize);
+                gameScreen.mainPanel.setPreferredSize(new Dimension(panelSize, panelSize));
+                gameScreen.mainPanel.setLayout(null);
                 MazeWithSprite.mazeInit(panelSize);
                 MazeWithSprite.drawMaze();
 
-                mainPanel.revalidate();
-                mainPanel.repaint();
+                gameScreen.mainPanel.revalidate();
+                gameScreen.mainPanel.repaint();
             }
         });
-        frame.add(mainPanel);
-        frame.add(new GameScreen());
-        mainPanel.add(MazeWithSprite.mazePanel);
-
+        frame.add(gameScreen);
+        gameScreen.mainPanel.add(MazeWithSprite.mazePanel);
         frame.setVisible(true);
     }
 
