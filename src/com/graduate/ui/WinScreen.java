@@ -32,7 +32,7 @@ public class WinScreen extends JPanel {
     }
 
     private void addTitlePanel() {
-        WinScreen.ShadowText titleWin = new WinScreen.ShadowText("YOU WIN!", SwingConstants.CENTER, 5, 5);
+        ShadowText titleWin = new ShadowText("YOU WIN!", SwingConstants.CENTER, 5, 5);
         titleWin.setForeground(Color.BLACK);
         titleWin.setFont(arcadeFont.deriveFont(108f));
 
@@ -131,18 +131,28 @@ public class WinScreen extends JPanel {
     }
 
     private void handleYesButtonClick() {
-        // Implement your logic for the "YES" button click
-        System.out.println("YES button clicked");
-        GameScreen.frame.remove(this); // 'this' refers to the current WinScreen instance
-        GameMenu gameMenu = new GameMenu(); // Create an instance of your game menu
-        GameScreen.frame.add(gameMenu); // Add the game menu to the frame
-        GameScreen.frame.revalidate();
-        GameScreen.frame.repaint();
+        JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(this);
+        frame.getContentPane().removeAll();
+
+        ImageIcon easyIcon = new ImageIcon("src/resources/images/easy.png");
+        ImageIcon mediumIcon = new ImageIcon("src/resources/images/medium.png");
+        ImageIcon extremeIcon = new ImageIcon("src/resources/images/extreme.png");
+        ImageIcon timerIcon500 = new ImageIcon("src/resources/images/500.png");
+        ImageIcon timerIcon1500 = new ImageIcon("src/resources/images/1500.png");
+        ImageIcon timerIcon6000 = new ImageIcon("src/resources/images/6000.png");
+
+        StartClass start = new StartClass(arcadeFont, easyIcon, mediumIcon, extremeIcon, timerIcon500, timerIcon1500, timerIcon6000);
+        frame.getContentPane().add(start);
+        frame.revalidate();
+        frame.repaint();
     }
 
     private void handleNoButtonClick() {
-        // Implement your logic for the "NO" button click
-        System.out.println("NO button clicked");
+        JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(this);
+        frame.getContentPane().removeAll();
+        frame.getContentPane().add(new GameMenu());
+        frame.revalidate();
+        frame.repaint();
     }
 
     static class ShadowText extends JLabel {
