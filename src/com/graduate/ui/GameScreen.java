@@ -113,7 +113,7 @@ public class GameScreen extends JPanel {
 
         GameScreen gameScreen = new GameScreen();
         gameScreen.startTimer(timeInSeconds); // Start the timer with the given duration
-
+        JPanel gamePanel = new JPanel();
         frame.addComponentListener(new ComponentAdapter() {
             @Override
             public void componentResized(ComponentEvent e) {
@@ -122,23 +122,24 @@ public class GameScreen extends JPanel {
                 int height = contentPaneSize.height;
                 int panelSize = Math.min(width, height);
                 int x = (width - panelSize) / 2;
-
+                
+              
                 MazeWithSprite.setMaze(StartClass.getMaze());
                 MazeWithSprite.setPlayerPos(StartClass.getPlayerPos());
-                MazeWithSprite.mazeInit(panelSize);
-                gameScreen.mainPanel.setBounds(x, 0, panelSize, panelSize);
-                gameScreen.mainPanel.setPreferredSize(new Dimension(panelSize, panelSize));
                 gameScreen.mainPanel.setLayout(null);
+                gamePanel.setBounds(x,0,panelSize,panelSize);
+                gamePanel.setPreferredSize(new Dimension(panelSize,panelSize));
                 MazeWithSprite.mazeInit(panelSize);
-                MazeWithSprite.drawMaze();
-
+                gamePanel.add(MazeWithSprite.mazePanel);
                 gameScreen.mainPanel.revalidate();
                 gameScreen.mainPanel.repaint();
             }
         });
         frame.add(gameScreen);
-        gameScreen.mainPanel.add(MazeWithSprite.mazePanel);
+        gameScreen.mainPanel.add(gamePanel);
         frame.setVisible(true);
+        SwingUtilities.invokeLater(() -> MazeWithSprite.mazePanel.requestFocusInWindow());
+
     }
 
     public static void gameStartnoSetMaze(int timeInSeconds) {
@@ -151,6 +152,7 @@ public class GameScreen extends JPanel {
         GameScreen gameScreen = new GameScreen();
         gameScreen.startTimer(timeInSeconds); // Start the timer with the given duration
 
+        JPanel gamePanel = new JPanel();
         frame.addComponentListener(new ComponentAdapter() {
             @Override
             public void componentResized(ComponentEvent e) {
@@ -160,20 +162,21 @@ public class GameScreen extends JPanel {
                 int panelSize = Math.min(width, height);
                 int x = (width - panelSize) / 2;
 
-                MazeWithSprite.mazeInit(panelSize);
-                gameScreen.mainPanel.setBounds(x, 0, panelSize, panelSize);
-                gameScreen.mainPanel.setPreferredSize(new Dimension(panelSize, panelSize));
+                MazeWithSprite.mazePanel(panelSize);
                 gameScreen.mainPanel.setLayout(null);
+                gamePanel.setBounds(x,0,panelSize,panelSize);
+                gamePanel.setPreferredSize(new Dimension(panelSize,panelSize));
                 MazeWithSprite.mazeInit(panelSize);
-                MazeWithSprite.drawMaze();
-
+                gamePanel.add(MazeWithSprite.mazePanel);
                 gameScreen.mainPanel.revalidate();
                 gameScreen.mainPanel.repaint();
             }
         });
         frame.add(gameScreen);
-        gameScreen.mainPanel.add(MazeWithSprite.mazePanel);
+
+        gameScreen.mainPanel.add(gamePanel);
         frame.setVisible(true);
+        SwingUtilities.invokeLater(() -> MazeWithSprite.mazePanel.requestFocusInWindow());
     }
 
 
@@ -198,9 +201,8 @@ public class GameScreen extends JPanel {
     }
 
     public static void main(String[] args) {
-        gameStartnoSetMaze();
+        gameStartnoSetMaze(600);
     }
 
-    private static void gameStartnoSetMaze() {
-    }
+    
 }
