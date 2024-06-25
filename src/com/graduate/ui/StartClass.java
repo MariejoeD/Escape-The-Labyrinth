@@ -226,6 +226,8 @@ public class StartClass extends JPanel {
             }
 
             GameScreen.gameStart(timeInSeconds);
+            // dispose();
+            SwingUtilities.getWindowAncestor(StartClass.this).dispose();
         });
 
 
