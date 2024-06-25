@@ -57,7 +57,7 @@ public class PauseScreen extends JPanel {
 
         buttonPanel.add(createStyledButton("RESUME", e -> gameScreen.resumeGame()));
         buttonPanel.add(Box.createVerticalStrut(20)); // Space between buttons
-        buttonPanel.add(createStyledButton("RESTART LEVEL", e -> restartLevel()));
+        buttonPanel.add(createStyledButton("RESTART LEVEL", e -> gameScreen.restartGame()));
         buttonPanel.add(Box.createVerticalStrut(20)); // Space between buttons
         buttonPanel.add(createStyledButton("QUIT GAME", e -> quitGame()));
 

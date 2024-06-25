@@ -25,11 +25,7 @@ public class MazeWithSprite extends JPanel {
 
     private static int[] finishLine = {5, 10};
 
-    public static void setMaze(int[][] maze) {
-        MazeWithSprite.maze = maze;
-    }
-
-    private static int[][] maze = {
+    private static int[][] initialMaze = {
             { 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1 },
             { 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1 },
             { 1, 0, 1, 0, 1, 1, 1, 1, 1, 0, 1 },
@@ -43,11 +39,10 @@ public class MazeWithSprite extends JPanel {
             { 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1 },
     };
 
-    public static void setPlayerPos(int[] playerPos) {
-        MazeWithSprite.playerPos = playerPos;
-    }
+    private static int[][] maze;
 
-    private static int[] playerPos = { 5, 0 };
+    private static int[] initialPlayerPos = { 5, 0 };
+    private static int[] playerPos;
 
     static BufferedImage spriteSheet;
 
@@ -68,6 +63,28 @@ public class MazeWithSprite extends JPanel {
     public static void updateTheme(String newThemePath) {
         themePath = newThemePath;
         drawMaze(); // Redraw the maze with the new theme
+    }
+
+    public static void setMaze(int[][] maze) {
+        MazeWithSprite.initialMaze = maze;
+    }
+
+    public static void setPlayerPos(int[] playerPos) {
+        MazeWithSprite.initialPlayerPos = playerPos;
+    }
+
+    public static void resetGame() {
+        // Reset maze to initial state
+        maze = new int[initialMaze.length][];
+        for (int i = 0; i < initialMaze.length; i++) {
+            maze[i] = initialMaze[i].clone();
+        }
+        spriteRow = 3;
+        // Reset player position
+        playerPos = initialPlayerPos.clone();
+
+        // Redraw the maze
+        drawMaze();
     }
 
     public static void map(int x, int y, int size, boolean isPlayer) {
@@ -102,8 +119,8 @@ public class MazeWithSprite extends JPanel {
         wall = new ImageIcon(themePath);
         wallImage = wall.getImage();
 
-        int x = maze[0].length, y = maze.length;
         mazePanel.removeAll();
+        int x = maze[0].length, y = maze.length;
         for (int i = 0; i < y; i++) {
             for (int j = 0; j < x; j++) {
                 map(j, i, x, (i == playerPos[1] && j == playerPos[0]));
@@ -158,9 +175,11 @@ public class MazeWithSprite extends JPanel {
             System.exit(1);
         }
 
+        // Initialize maze with specified size
         mazePanel(x);
-        drawMaze();
-        attachKeyListener();
+        resetGame(); // Initialize maze and player positions
+        drawMaze(); // Draw the maze
+        attachKeyListener(); // Attach key listener for player movement
     }
 
     private static void attachKeyListener() {
