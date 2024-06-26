@@ -23,8 +23,9 @@ public class MazeWithSprite extends JPanel {
     static ImageIcon wall = new ImageIcon(themePath);
     static Image wallImage = wall.getImage();
 
-    private static int[] finishLine = {5, 10};
+    private static int[] initFinishLine = {5, 10};
 
+    private static int[] finish;
     private static int[][] initialMaze = {
             { 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1 },
             { 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1 },
@@ -57,7 +58,7 @@ public class MazeWithSprite extends JPanel {
         mazePanel.setVisible(true);
         mazePanel.setFocusable(true);
         mazePanel.requestFocusInWindow();
-        maxSize = x + 2;
+        maxSize = x;
     }
 
     public static void updateTheme(String newThemePath) {
@@ -73,6 +74,8 @@ public class MazeWithSprite extends JPanel {
         MazeWithSprite.initialPlayerPos = playerPos;
     }
 
+    public static void setFinsih(int[] finish){MazeWithSprite.initFinishLine = finish;}
+
     public static void resetGame() {
         // Reset maze to initial state
         maze = new int[initialMaze.length][];
@@ -82,6 +85,7 @@ public class MazeWithSprite extends JPanel {
         spriteRow = 3;
         // Reset player position
         playerPos = initialPlayerPos.clone();
+        finish = initFinishLine.clone();
 
         // Redraw the maze
         drawMaze();
@@ -144,8 +148,9 @@ public class MazeWithSprite extends JPanel {
         finish();
     }
 
+
     public static void finish() {
-        if (playerPos[0] == finishLine[0] && playerPos[1] == finishLine[1]) {
+        if (playerPos[0] == finish[0] && playerPos[1] == finish[1]) {
             drawMaze();
             WinScreen win = new WinScreen();
             GameScreen.frame.getContentPane().removeAll();

@@ -18,7 +18,8 @@ public class GameOverScreen extends JPanel {
         addTitlePanel();
         addPromptAndButtonsPanel();
         if (SoundPlayer.isSoundOn()) {
-            SoundPlayer.playSound("src/resources/sounds/lose-sound.wav");
+            SoundPlayer.stopSound();
+            SoundPlayer.loopSound("src/resources/sounds/lose-sound.wav");
         }
     }
 
@@ -134,6 +135,9 @@ public class GameOverScreen extends JPanel {
         JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(this);
         frame.getContentPane().removeAll();
 
+        SoundPlayer.stopSound();
+        SoundPlayer.loopSound("src/resources/sounds/menu-sound.wav");
+
         ImageIcon easyIcon = new ImageIcon("src/resources/images/easy.png");
         ImageIcon mediumIcon = new ImageIcon("src/resources/images/medium.png");
         ImageIcon extremeIcon = new ImageIcon("src/resources/images/extreme.png");
@@ -148,6 +152,9 @@ public class GameOverScreen extends JPanel {
     }
 
     private void handleNoButtonClick() {
+        SoundPlayer.stopSound();
+        SoundPlayer.loopSound("src/resources/sounds/menu-sound.wav");
+
         JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(this);
         frame.getContentPane().removeAll();
         frame.getContentPane().add(new GameMenu());
